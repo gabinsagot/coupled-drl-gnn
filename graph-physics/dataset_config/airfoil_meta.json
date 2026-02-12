@@ -1,0 +1,48 @@
+{
+  "dt": 0.01,
+  "features": {
+    "Vitesse": {
+      "type": "dynamic",
+      "shape": [
+        300,
+        -1,
+        3
+      ],
+      "dtype": "float32"
+    },
+    "Pression": {
+      "type": "dynamic",
+      "shape": [
+        300,
+        -1,
+        1
+      ],
+      "dtype": "float32"
+    },
+    "LSF": {
+      "type": "static",
+      "shape": [
+        300,
+        -1,
+        1
+      ],
+      "dtype": "float32"
+    },
+    "NodeType": {
+      "type": "static",
+      "shape": [
+        300,
+        -1,
+        1
+      ],
+      "dtype": "float32"
+    }
+  },
+  "field_names": [
+    "Vitesse",
+    "Pression",
+    "LSF",
+    "NodeType"
+  ],
+  "trajectory_length": 300
+}
