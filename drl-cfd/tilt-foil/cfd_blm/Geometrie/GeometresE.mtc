@@ -1,0 +1,507 @@
+
+{ GeometresE=
+    { Type= ModeleDeModeles }
+      { Dependance= 
+        
+      { Maillage= MaillagePrincipal }
+   
+      { Modele= GeoBord }
+        
+      { Modele= DefinitionWallIn }
+      { Modele= GeoWallIn }
+      { Modele= DistanceWallIn }
+	  
+      { Modele= DefinitionWallBottom }
+      { Modele= GeoWallBottom }
+      { Modele= DistanceWallBottom }
+	  
+	  { Modele= DefinitionWallOut }
+      { Modele= GeoWallOut }
+      { Modele= DistanceWallOut }
+	  
+	  { Modele= DefinitionWallTop }
+      { Modele= GeoWallTop }
+      { Modele= DistanceWallTop }
+	  
+	  { Modele= DefinitionObject }
+      { Modele= GeoObject }
+	  { Modele= DistanceObject }
+	  { Modele= Corners }
+	  { Modele= NodeType }
+    }
+}
+
+{ GeoBord=
+    { Type= ModeleDeGeometres }
+    { Data=
+        { Geometre= 
+            { Type= GeometreChamp }
+            { Data=
+                { Champ= BordNoeud }
+                { ValeurSeuilMin= 0.999999 }
+                { ValeurSeuilMax= 1.000001 }
+            }
+        }
+    }
+    { Dependance=
+        { Maillage= MaillagePrincipal }
+    }
+}
+
+{ DefinitionWallIn=
+    { Type= ModeleDeMouvements }
+    { Data=
+        { Repere=
+            { Dimension= 2 } 
+            { Nom= WallIn }
+            { Origine= 0 0 }
+            { Normale= 1 0 }
+        }
+    }
+    { Dependance= 
+        { Maillage= MaillagePrincipal }
+    }
+}
+
+{ GeoWallIn=
+    { Type= ModeleDeGeometres }
+    { Data=
+		{ Geometre= 
+			{ Nom= MUR }
+			{ Type= GeometreAnalytique }
+			{ Data=
+				{ Forme= 
+					{ Dimension= 2 } 
+					{ Type= DemiPlan }
+					
+                    	
+                    								
+				}
+				{ Repere= WallIn }
+			}
+		}
+    }
+    { Dependance=
+        { Maillage= MaillagePrincipal }
+        { Modele= DefinitionWallIn }
+    }
+}
+
+{ DistanceWallIn=
+	{ Type= ModeleParticulaire }
+	{ Data=
+		{ Champ= 
+			{ Type= P1_Scalaire_Par }
+			{ Nom= LevelSetWallIn }
+			{ Data= ValeurItem 1 0.0 }                        // ##
+		}
+		{ Champ= 
+			{ Type= P1_Scalaire_Par }
+			{ Nom= AppartientWallIn }
+			{ Data= ValeurItem 1 0.0 }                        // ##
+		}
+		{ ItemSolveur=
+			{ Type= ISGeometre }
+			{ NbChampSolution= 2 }
+			{ ChampSolution= AppartientWallIn LevelSetWallIn }
+			{ NbChampParametre= 2 }
+			{ ChampParametre= Coordonnees PrecisionFrontieres }
+			{ Geometre= MUR }
+			{ Distance= 1 }
+			{ Appartient= 1 }
+		}
+	}
+	{ Dependance=
+		{ Maillage= MaillagePrincipal }
+		{ Champ= Coordonnees }
+		{ Champ= PrecisionFrontieres }
+	}
+}
+
+
+
+
+{ DefinitionWallBottom=
+    { Type= ModeleDeMouvements }
+    { Data=
+        { Repere=
+            { Dimension= 2 } 
+            { Nom= WallBottom }
+            { Origine= 0 0 }
+            { Normale= 0 1 }
+        }
+    }
+    { Dependance= 
+        { Maillage= MaillagePrincipal }
+    }
+}
+
+{ GeoWallBottom=
+    { Type= ModeleDeGeometres }
+    { Data=
+		{ Geometre= 
+			{ Nom= MUR2 }
+			{ Type= GeometreAnalytique }
+			{ Data=
+				{ Forme= 
+					{ Dimension= 2 } 
+					{ Type= DemiPlan }
+                    								
+				}
+				{ Repere= WallBottom }
+			}
+		}
+    }
+    { Dependance=
+        { Maillage= MaillagePrincipal }
+        { Modele= DefinitionWallBottom }
+    }
+}
+
+{ DistanceWallBottom=
+	{ Type= ModeleParticulaire }
+	{ Data=
+		{ Champ= 
+			{ Type= P1_Scalaire_Par }
+			{ Nom= LevelSetWallBottom }
+			{ Data= ValeurItem 1 0.0 }                        // ##
+		}
+		{ Champ= 
+			{ Type= P1_Scalaire_Par }
+			{ Nom= AppartientWallBottom }
+			{ Data= ValeurItem 1 0.0 }                        // ##
+		}
+		{ ItemSolveur=
+			{ Type= ISGeometre }
+			{ NbChampSolution= 2 }
+			{ ChampSolution= AppartientWallBottom LevelSetWallBottom }
+			{ NbChampParametre= 2 }
+			{ ChampParametre= Coordonnees PrecisionFrontieres }
+			{ Geometre= MUR2 }
+			{ Distance= 1 }
+			{ Appartient= 1 }
+		}
+	}
+	{ Dependance=
+		{ Maillage= MaillagePrincipal }
+		{ Champ= Coordonnees }
+		{ Champ= PrecisionFrontieres }
+	}
+}
+
+
+
+{ DefinitionWallOut=
+    { Type= ModeleDeMouvements }
+    { Data=
+        { Repere=
+            { Dimension= 2 } 
+            { Nom= WallOut }
+            { Origine= 12 0 }
+            { Normale= -1 0 }
+        }
+    }
+    { Dependance= 
+        { Maillage= MaillagePrincipal }
+    }
+}
+
+{ GeoWallOut=
+    { Type= ModeleDeGeometres }
+    { Data=
+		{ Geometre= 
+			{ Nom= MUR3 }
+			{ Type= GeometreAnalytique }
+			{ Data=
+				{ Forme= 
+					{ Dimension= 2 } 
+					{ Type= DemiPlan }
+                    								
+				}
+				{ Repere= WallOut }
+			}
+		}
+    }
+    { Dependance=
+        { Maillage= MaillagePrincipal }
+        { Modele= DefinitionWallOut }
+    }
+}
+
+{ DistanceWallOut=
+	{ Type= ModeleParticulaire }
+	{ Data=
+		{ Champ= 
+			{ Type= P1_Scalaire_Par }
+			{ Nom= LevelSetWallOut }
+			{ Data= ValeurItem 1 0.0 }                        // ##
+		}
+		{ Champ= 
+			{ Type= P1_Scalaire_Par }
+			{ Nom= AppartientWallOut }
+			{ Data= ValeurItem 1 0.0 }                        // ##
+		}
+		{ ItemSolveur=
+			{ Type= ISGeometre }
+			{ NbChampSolution= 2 }
+			{ ChampSolution= AppartientWallOut LevelSetWallOut }
+			{ NbChampParametre= 2 }
+			{ ChampParametre= Coordonnees PrecisionFrontieres }
+			{ Geometre= MUR3 }
+			{ Distance= 1 }
+			{ Appartient= 1 }
+		}
+	}
+	{ Dependance=
+		{ Maillage= MaillagePrincipal }
+		{ Champ= Coordonnees }
+		{ Champ= PrecisionFrontieres }
+	}
+}
+
+
+{ DefinitionWallTop=
+    { Type= ModeleDeMouvements }
+    { Data=
+        { Repere=
+            { Dimension= 2 } 
+            { Nom= WallTop }
+            { Origine= 0 4 }
+            { Normale= 0 -1 }
+        }
+    }
+    { Dependance= 
+        { Maillage= MaillagePrincipal }
+    }
+}
+
+{ GeoWallTop=
+    { Type= ModeleDeGeometres }
+    { Data=
+		{ Geometre= 
+			{ Nom= MUR4 }
+			{ Type= GeometreAnalytique }
+			{ Data=
+				{ Forme= 
+					{ Dimension= 2 } 
+					{ Type= DemiPlan }
+                    								
+				}
+				{ Repere= WallTop }
+			}
+		}
+    }
+    { Dependance=
+        { Maillage= MaillagePrincipal }
+        { Modele= DefinitionWallTop }
+    }
+}
+
+{ DistanceWallTop=
+	{ Type= ModeleParticulaire }
+	{ Data=
+		{ Champ= 
+			{ Type= P1_Scalaire_Par }
+			{ Nom= LevelSetWallTop }
+			{ Data= ValeurItem 1 0.0 }                        // ##
+		}
+		{ Champ= 
+			{ Type= P1_Scalaire_Par }
+			{ Nom= AppartientWallTop }
+			{ Data= ValeurItem 1 0.0 }                        // ##
+		}
+		{ ItemSolveur=
+			{ Type= ISGeometre }
+			{ NbChampSolution= 2 }
+			{ ChampSolution= AppartientWallTop LevelSetWallTop }
+			{ NbChampParametre= 2 }
+			{ ChampParametre= Coordonnees PrecisionFrontieres }
+			{ Geometre= MUR4 }
+			{ Distance= 1 }
+			{ Appartient= 1 }
+		}
+	}
+	{ Dependance=
+		{ Maillage= MaillagePrincipal }
+		{ Champ= Coordonnees }
+		{ Champ= PrecisionFrontieres }
+	}
+}
+
+{ DefinitionObject=
+    { Type= ModeleDeMouvements }
+    { Data=
+        { Repere=
+            { Dimension= 2 } 
+            { Nom= Object }
+            { Origine= 0 0 } 
+            { Axes = 1 0 0 1 } 
+        }
+    }
+    { Dependance= 
+        { Maillage= MaillagePrincipal }
+    }
+}
+
+{ GeoObject=
+    { Type= ModeleDeGeometres }
+    { Data=
+		{ Geometre= 
+			{ Nom= Object }
+			{ Type= GeometreAnalytique }
+			{ Data=
+				{ Forme=
+                    { Type= FormeNewMaillageBis }
+                    { Data=
+                        { M: meshes/object.t }
+                        { Localisation=
+                            { Brique= Boite }
+                            { Methode= Logarithmique }
+                            { TailleMax= 1024 }
+                        }
+                    }
+                }
+				{ Repere= Object }
+			}
+		}
+    }
+    { Dependance=
+        { Maillage= MaillagePrincipal }
+        { Modele= DefinitionObject }
+    }
+}
+
+{ DistanceObject=
+	{ Type= ModeleParticulaire }
+	{ Data=
+		{ Champ= 
+			{ Type= P1_Scalaire_Par }
+			{ Nom= LevelSetObject }
+			{ Data= ValeurItem 1 0.0 }                        // ##
+		}
+		{ Champ= 
+			{ Type= P1_Scalaire_Par }
+			{ Nom= AppartientObject }
+			{ Data= ValeurItem 1 0.0 }                        // ##
+		}
+		{ ItemSolveur=
+			{ Type= ISGeometre }
+			{ NbChampSolution= 2 }
+			{ ChampSolution= AppartientObject LevelSetObject }
+			{ NbChampParametre= 2 }
+			{ ChampParametre= Coordonnees PrecisionFrontieres }
+			{ Geometre= Object }
+			{ Distance= 1 }
+			{ Appartient= 1 }
+		}
+	}
+	{ Dependance=
+		{ Maillage= MaillagePrincipal }
+		{ Champ= Coordonnees }
+		{ Champ= PrecisionFrontieres }
+	}
+}
+
+/////////////////////////////////////////////////////
+////////// NODE TYPE (FOR GNN) //////////////////////
+/////////////////////////////////////////////////////
+
+{ Corners=
+	{ Type= ModeleArithmetique }
+	{ Data=
+		{ Champ= { Type= P1_Scalaire_Par }	{ Nom= CornerTopLeft }		{ Data= ValeurItem 1 0 } }
+		{ Champ= { Type= P1_Scalaire_Par }	{ Nom= CornerBottomLeft }	{ Data= ValeurItem 1 0 } }
+		{ Champ= { Type= P1_Scalaire_Par }	{ Nom= CornerBottomRight }	{ Data= ValeurItem 1 0 } }
+		{ Champ= { Type= P1_Scalaire_Par }	{ Nom= CornerTopRight }		{ Data= ValeurItem 1 0 } }
+	}
+	{ Dependance=
+		{ Maillage= MaillagePrincipal }
+		{ Champ= AppartientObject }
+		{ Champ= AppartientWallIn }
+		{ Champ= AppartientWallOut }
+		{ Champ= AppartientWallBottom }
+		{ Champ= AppartientWallTop }
+		{ Champ= Un }
+	}
+	{ DependanceModifiable=
+		{ Champ= CornerTopLeft }
+		{ Champ= CornerBottomLeft }
+		{ Champ= CornerBottomRight }
+		{ Champ= CornerTopRight }
+	}
+	// top left corner
+	{ Operation= CornerTopLeft = AppartientWallIn }
+	{ Operation= CornerTopLeft += AppartientWallTop }
+	{ Operation= CornerTopLeft >? Un }
+	// bottom left corner
+	{ Operation= CornerBottomLeft = AppartientWallIn }
+	{ Operation= CornerBottomLeft += AppartientWallBottom }
+	{ Operation= CornerBottomLeft >? Un }
+	// bottom right corner
+	{ Operation= CornerBottomRight = AppartientWallOut }
+	{ Operation= CornerBottomRight += AppartientWallBottom }
+	{ Operation= CornerBottomRight >? Un }
+	// top right corner
+	{ Operation= CornerTopRight = AppartientWallOut }
+	{ Operation= CornerTopRight += AppartientWallTop }
+	{ Operation= CornerTopRight >? Un }
+}
+
+
+{ NodeType=
+	{ Type= ModeleArithmetique }
+	{ Data=
+		{ Champ= { Type= P1_Scalaire_Par }	{ Nom= NodeType }		{ Data= ValeurItem 1 0 } }
+		{ Champ= { Type= P0C_Scalaire_Par }	{ Nom= Four }			{ Data= ValeurItem 1 4 } }
+		{ Champ= { Type= P0C_Scalaire_Par }	{ Nom= Five }			{ Data= ValeurItem 1 5 } }
+		{ Champ= { Type= P0C_Scalaire_Par }	{ Nom= Six }			{ Data= ValeurItem 1 6 } }
+		{ Champ= { Type= P1_Scalaire_Par }	{ Nom= Inflow }			{ Data= ValeurItem 1 0 } }		
+		{ Champ= { Type= P1_Scalaire_Par }	{ Nom= Outflow }		{ Data= ValeurItem 1 0 } }		
+		{ Champ= { Type= P1_Scalaire_Par }	{ Nom= WallBoundary }	{ Data= ValeurItem 1 0 } }	
+		{ Champ= { Type= P1_Scalaire_Par }	{ Nom= Object }			{ Data= ValeurItem 1 0 } }	
+	}
+	{ Dependance=
+		{ Maillage= MaillagePrincipal }
+		{ Champ= AppartientObject }
+		{ Champ= AppartientWallIn }
+		{ Champ= AppartientWallOut }
+		{ Champ= AppartientWallBottom }
+		{ Champ= AppartientWallTop }
+		{ Champ= Four }
+		{ Champ= Five }
+		{ Champ= Six }
+	}
+	{ DependanceModifiable=
+		{ Champ= NodeType }
+		{ Champ= CornerBottomLeft }
+		{ Champ= CornerBottomRight }
+		{ Champ= CornerTopLeft }
+		{ Champ= CornerTopRight }
+		{ Champ= Inflow }
+		{ Champ= Outflow }
+		{ Champ= WallBoundary }
+		{ Champ= Object }
+	}
+	// inflow
+	{ Operation= Inflow = AppartientWallIn }
+	{ Operation= Inflow *= Four }
+	// outflow
+	{ Operation= Outflow = AppartientWallOut }
+	{ Operation= Outflow += AppartientWallTop }
+	{ Operation= Outflow -= CornerTopLeft }
+	{ Operation= Outflow -= CornerTopRight }
+	{ Operation= Outflow -= CornerBottomRight }
+	{ Operation= Outflow *= Five }
+	// object
+	{ Operation= Object = AppartientObject }
+	// wall boundary
+	// { Operation= WallBoundary += AppartientObject }
+	{ Operation= WallBoundary += AppartientWallBottom }
+	{ Operation= WallBoundary -= CornerBottomLeft }
+	{ Operation= WallBoundary *= Six }
+	// All node types
+	{ Operation= NodeType = Inflow }
+	{ Operation= NodeType += Outflow }
+	{ Operation= NodeType += WallBoundary }
+	{ Operation= NodeType += Object }
+}

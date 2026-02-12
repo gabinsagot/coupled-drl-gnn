@@ -1,0 +1,32 @@
+{ Temps=
+    { Type= ModeleDeModeles  }
+
+    { Data=
+	{ Champ=             
+            { Type= P0C_Scalaire_Par }             
+            { Nom= CompteurTemps }             
+            { Data= ValeurItem 1 0 }   
+        }     
+        { Champ=             
+            { Type= P0C_Scalaire_Par }             
+            { Nom= PasDeTemps }             
+            { Data= ValeurItem 1 0.1 }         
+        }
+        { Champ=             
+            { Type= P0C_Scalaire_Par }             
+            { Nom= Temps }             
+            { Data= ValeurItem 1 0 }         
+        }
+        { Champ=             
+            { Type= P0C_Scalaire_Par }             
+            { Nom= TempsFin }             
+            { Data= ValeurItem 1 100 }    
+        }
+     }
+   
+        { Dependance=  
+            { Maillage= MaillagePrincipal }
+			{ Modele= Increments }
+		}
+
+ }

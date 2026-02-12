@@ -1,0 +1,41 @@
+{ Maillage=
+	{ Type= ModeleMaillage }
+	{ Nom= MaillagePrincipal }
+	{ M: meshes/domain.t }
+	{ Data=
+		{ Champ= { Type= P0C_Scalaire_Par }	{ Nom= LaMarge }		{ Data= ValeurItem 1 100 }}
+		{ Champ= { Type= P0_Scalaire_Par }	{ Nom= BordElement }	{ Data= ValeurItem 1 0 }}
+		{ Champ= { Type= P1_Scalaire_Par }	{ Nom= BordNoeud }		{ Data= ValeurItem 1 0 }}
+		{ Champ= { Type= P1_Vecteur_Par }	{ Nom= Coordonnees }	{ Data: Dimension/vecteur.txt }}
+		{ NbChampSolution= 3 } 
+		{ ChampSolution= BordNoeud BordElement Coordonnees }
+	   	{ HAdaptation=
+			{ Sequence= "1 4\n2 4\n0\n" }
+			{ Effectue= BLMOne }
+			{ Marge= LaMarge }
+			{ Taille= BLMMixedMetrique }
+			{ Transport=
+				{ Brique= Boite }
+				{ Methode= Logarithmique }
+				{ OptionInOut= 2 } 
+				{ TailleMax= 1024 }
+			}
+		}
+		{ Partitionnement=
+			{ Scripts=
+				{ Remaillage= Maillage/remaille.txt }
+				{ Decale= Maillage/decale.txt }
+				{ Repartitionne= Maillage/partit_ameliore.txt }
+			}
+		}
+		{ NbChampParametre= 2 }
+        { ChampParametre= BLMMixedMetrique BLMOne }     
+	}
+	{ Dependance= 	
+		{ Maillage= MaillagePrincipal }
+		{ Champ= BLMMixedMetrique }
+		{ Champ= BLMOne }
+		{ Champ= LaMarge }
+	}
+}
+

@@ -1,0 +1,76 @@
+# main
+*.pyc
+.venv/
+env/
+dist/
+build/
+**/*.egg-info/
+.vscode/
+.idea/
+venv/*
+venvuys/*
+jax/*
+dgl/
+nohup.out
+.env
+.pytest_cache/
+.benchmarks/
+**/__pycache__/
+.DS_Store
+
+
+# mesh
+*.t
+*.msh
+*.vtk
+*.vtu
+*.xdmf
+*.h5
+*.hdf5
+*.pvd
+*.vts
+*.vtp
+*.foam
+*.obj
+*.stl
+*.off
+*.ply
+*.3ds
+*.gltf
+*.glb 
+*.geo
+*.geo_unrolled
+
+# logs
+**/*.log
+**/*.out
+**/*.err
+**/*.tsv
+**/*.npz
+
+# gnn
+**/*.ckpt
+!mock_model.ckpt
+
+# results folders
+**/meshes*/
+**/results/
+**/predictions/
+**/wandb/
+**/checkpoints/
+**/runs/
+**/dataset/
+**/Resultats/
+**/OutputMesh/
+
+# personal settings
+my_optim/*
+
+# other 
+*.png
+*.jpg
+*.pdf
+**/*.csv
+**/*.pth
+**/*.pkl
+**/*.npy

@@ -1,0 +1,38 @@
+{ Lanceur= setupclean } 
+
+
+{ setupclean =
+    { Type= ModeleDeModeles }
+    { Dependance=  
+        { Maillage= MaillagePrincipal }
+        { Modele= BLM }
+        { Modele= Geometres }
+        { Modele= Sorties }
+    }
+ }
+
+
+Increments
+{ Fichier: Increments/temps.mtc }
+
+Maillage
+{ Fichier: Maillage/maillage.mtc }
+
+Geometrie
+{ Fichier: Geometrie/Geometres.mtc }
+{ Fichier: Geometrie/GeometresE.mtc }
+
+IO	
+{ Fichier: IO/output.mtc }
+{ Fichier: IO/Parametres.mtc }
+{ Fichier: IO/Interacteur.mtc }
+
+
+BLM
+{ Fichier: BLM/blm.mtc }
+{ Fichier: BLM/Scripts/geometres.mtc }
+{ Fichier: BLM/Scripts/constants.mtc }
+{ Fichier: BLM/Scripts/computemeshsize.mtc }
+{ Fichier: BLM/Scripts/computemeshsizeground.mtc }
+{ Fichier: BLM/Scripts/criterias.mtc }
+{ Fichier: BLM/Scripts/Interacteur.mtc }

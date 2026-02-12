@@ -1,0 +1,22 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "graphdrl"
+version = "0.1.0"
+description = "Graph-DRL: an integration of PBO DRL and Graph Physics GNN"
+authors = [{ name = "Theodore MICHEL" }]
+readme = "README.md"
+requires-python = ">=3.11"
+
+
+[tool.setuptools.packages.find]
+where = ["."]
+
+[project.scripts]
+plot = "graphdrl.postprocess.plot:main"
+postprocess = "graphdrl.postprocess.postresults:main"
+store = "graphdrl.postprocess.store_results:main"
+forces = "graphdrl.utils.forces:main"
+reward = "graphdrl.utils.reward:main"

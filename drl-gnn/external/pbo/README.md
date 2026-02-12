@@ -1,0 +1,98 @@
+# Policy-based optimization
+
+<p align="center">
+  <img align="right" width="350" alt="logo" src="pbo/msc/logo.png">
+</p>
+
+> [!Note]
+> This repository is a fork of the original repository by J. Viquerat et al. (<a href="https://github.com/jviquerat/pbo">jviquerat/pbo</a>) (in Python 3.6), adapted to Python 3.11 and TensorFlow 2.19.0 by T. Michel. 
+
+PBO (policy-based optimization) is a degenerate policy gradient algorithm used for black-box optimization. It shares common traits with both DRL (deep reinforcement learning) policy gradient methods, and ES (evolution strategies) techniques. In this repository, we present a parallel PBO algorithm with full covariance matrix adaptation, along with a few demonstrative applications. The related pre-print can be found <a href="https://arxiv.org/abs/2104.06175">here</a> and the formal paper <a href="https://link.springer.com/article/10.1007/s00521-022-07779-0">here</a>. This paper formalizes the approach used in previous related works:
+
+- Direct shape optimization through deep reinforcement learning (<a href="https://www.sciencedirect.com/science/article/pii/S0021999120308548">paper</a>, <a href="https://arxiv.org/pdf/1908.09885.pdf">pre-print</a> and <a href="https://github.com/jviquerat/drl_shape_optimization">github repository</a>),
+- Single-step deep reinforcement learning for open-loop control of laminar and turbulent flows (<a href="https://journals.aps.org/prfluids/abstract/10.1103/PhysRevFluids.6.053902">paper</a> and <a href="https://arxiv.org/pdf/2006.02979.pdf">pre-print</a>),
+- Deep reinforcement learning for the control of conjugate heat transfer with application to workpiece cooling (<a href="https://www.sciencedirect.com/science/article/pii/S0021999121002126">paper</a> and <a href="https://arxiv.org/pdf/2011.15035.pdf">pre-print</a>)
+
+If you use this code for your research, please consider citing:
+
+```
+Policy-based optimization: single-step policy gradient method seen as an evolution strategy
+J. Viquerat, R. Duvigneau, P. Meliga, A. Kuhnle, E. Hachem
+Neural Computing and Applications, vol. 35, iss. 1, 2023
+```
+
+## Installation and usage
+
+After cloning the package, just `cd` inside the folder and install using:
+
+```
+pip install -e .
+```
+
+The environments from the paper are available in the `envs/*` folder. For each `.py` environment file, you need a `.json` parameter file **located in the same directory**. To run an environment, just use:
+
+```
+pbo path/to/envs/my_env.json
+```
+
+> [!Note]
+> Given that tensorflow optimizers have changed in tensorflow `2.19.0`, `tf.keras.optimizers.Adam` now uses `tf.keras` rather than `tf_keras.` To keep optimal performances for original hyperparamters and avoid degradation, force tensorflow to use `tf_keras` with environment variable:
+> ```bash
+> export TF_USE_LEGACY_KERAS=True
+> ```
+> You can include this in the activation script of your virtual env for automation. For conda see this [example](https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html#macos-and-linux)
+
+Below are some selected optimization cases performed with the algorithm.
+
+## Function minimization
+
+Simple minimum-finding on textbook analytical functions (see more in the paper).
+
+### Parabola function
+
+We consider the minimization on a parabola defined in `[-5,5]x[-5,5]`. Below is the course of a single run, generation after generation, with a starting point in `[2.5,2.5]`:
+
+<p align="center">
+  <img width="600" alt="" src="pbo/save/parabola/parabola.gif">
+</p>
+
+### Rosenbrock function
+
+The Rosenbrock function is here defined in `[-2,2]x[-2,2]`. It contains a very narrow valley, with a minimum in `[1,1]`. The shape of the valley makes it a hard optimization problem for many algorithms. Here is the course of a single run, generation after generation, with a starting point in `[0.0,-1.0]`:
+
+<p align="center">
+  <img width="600" alt="" src="pbo/save/rosenbrock/rosenbrock.gif">
+</p>
+
+## Packing
+
+Optimal packing of geometrical shapes (see <a href="https://erich-friedman.github.io/packing/index.html">here</a> for much, much more). The goal is to pack unit shapes in the square of smallest side. Most solutions are already known.
+
+| Environment | Description |
+| :---------- | :---------- |
+| <img width="200" alt="" src="pbo/save/6_circles_in_square/6_circles_in_square.gif"> | **6 circles in square** (12 degrees of freedom): the optimal value is `s = 5.328+`, best PBO result was `s = 5.331` after 800 generations. |
+| <img width="200" alt="" src="pbo/save/10_circles_in_square/10_circles_in_square.gif"> | **10 circles in square** (20 degrees of freedom): the optimal value is `s = 6.747+`, best PBO result was `s = 6.754` after 1000 generations |
+| <img width="200" alt="" src="pbo/save/3_triangles_in_square/3_triangles_in_square.gif"> | **3 equilateral triangles in square** (9 degrees of freedom): the optimal value is `s = 1.478+`, best PBO result was `s = 1.478+` after 1000 generations |
+| <img width="200" alt="" src="pbo/save/5_triangles_in_square/5_triangles_in_square.gif"> | **5 equilateral triangles in square** (15 degrees of freedom): the optimal value is `s = 1.803+`, best PBO result was `s = 1.807+` after 2500 generations |
+
+## Parametric control laws
+
+### Chaotic Lorenz attractor
+
+We consider the equations of the Lorenz attractor with a velocity-based control term:
+
+<p align="center">
+  <img width="300" alt="" src="pbo/save/eq.jpeg">
+</p>
+
+We make use of the following non-linear control with four free parameters:
+
+<p align="center">
+  <img width="300" alt="" src="pbo/save/ctrl.jpeg">
+</p>
+
+Two control cases are designed: the first one consists in forcing the system to stay in the x<0 quadrant, while the second one consists in maximizing the number of sign changes (cases inspired from <a href="https://research.tue.nl/files/146730787/Beintema_afstudeerverslag.pdf">this thesis</a>). Below is a comparison between the two controlled cases.
+
+<p align="center">
+  <img width="400" alt="" src="pbo/save/lorenz_stabilizer/lorenz.gif"> <img width="400" alt="" src="pbo/save/lorenz_oscillator/lorenz.gif">
+</p>

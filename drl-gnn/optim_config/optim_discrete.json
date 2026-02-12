@@ -1,0 +1,18 @@
+{
+    "env_name": "optim_discrete",
+    "type": "discrete",
+    "pdf": "cma-full",
+    "avg_type": "linear",
+    "n_gen": 100,
+    "n_ind": 8,
+    "n_avg": 5,
+    "n_cpu": 2,
+    "lr": 5.0e-3,
+    "arch": [2,2,2],
+    "epochs": 128,
+    "param_gen": 1,
+    "batch": 8,
+    "adv_clip": true,
+    "adv_decay": 0.65,
+    "continuity_regul": 1e-4
+}

@@ -1,0 +1,37 @@
+{ BLMInteracteur=
+	{ Type= ModeleInteracteur }
+	{ IHM= IHM.mtc } //BLM/ihm.mtc
+	{ Data=
+		{ Champ= { Type= P0C_Scalaire_Par }	{ Nom= BLMPrompt }		{ Data= 1 1 1 }}
+		{ Champ= { Type= P0C_Scalaire_Par }	{ Nom= BLMPrompteur }	{ Data= 1 1 0 }}
+	}
+	{ DependanceModifiable= 
+		{ Champ= BLMPrompt }
+		{ Champ= BLMPrompteur }
+		{ Champ= BLMCompteurTemps }
+		{ Champ= BLMHbox1 }
+		{ Champ= BLMHbox2 }
+		{ Champ= BLMHbox3 }
+		{ Champ= BLMGrowth }
+		{ Champ= BLMLayers }
+		{ Champ= BLMFrequency }
+		{ Champ= BLMBox }
+		{ Champ= BLMInverseLevelSet }
+		{ Champ= BLMMaxIteration }
+		// { Champ= BLMIterativeProcedure }
+		{ Champ= BLMRatio }
+		{ Champ= BLMAnisotropic } 
+		{ Champ= BLMHbox4 } 
+
+		// BLM Ground
+		// { Champ= BLMHbox1Ground }
+		// { Champ= BLMHbox2Ground }
+		// { Champ= BLMHbox3Ground }
+		// { Champ= BLMLayersGround }
+		// { Champ= BLMGrowthGround }
+		// { Champ= BLMRatioGround }
+	}
+ 	{ Dependance= 
+		{ Maillage= MaillagePrincipal }
+	}
+}

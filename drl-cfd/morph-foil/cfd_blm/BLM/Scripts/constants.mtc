@@ -1,0 +1,29 @@
+
+{ BLMParametres= 
+    { Type= ModeleConstant }
+    { Data= 
+        { Champ= { Type= P0C_Scalaire_Par }	{ Nom= BLMPrecisionFrontieres }	{ Data= ValeurItem 1 1e-6 }}        // 0.0000001                
+      	{ Champ= { Type= P0C_Scalaire_Par }	{ Nom= BLMDeux }				{ Data= ValeurItem 1 2 }}
+		{ Champ= { Type= P0C_Scalaire_Par }	{ Nom= BLMUn }					{ Data= ValeurItem 1 1 } }
+		{ Champ= { Type= P0C_Scalaire_Par }	{ Nom= BLMEpsilonMesh }			{ Data= ValeurItem 1 -0.025 }} // 4
+		{ Champ= { Type= P0C_Scalaire_Par }	{ Nom= BLMOne }					{ Data= ValeurItem 1 1 }}
+		{ Champ= { Type= P0C_Scalaire_Par }	{ Nom= BLMZero }				{ Data= ValeurItem 1 0 }}		
+		{ Champ= { Type= P0C_Scalaire_Par }	{ Nom= BLMMOne }				{ Data= ValeurItem 1 -1 }}
+		{ Champ= { Type= P0C_Scalaire_Par }	{ Nom= BLMHalf }				{ Data= ValeurItem 1 0.5 }}	
+		{ Champ= { Type= P1_Scalaire_Par }	{ Nom= BLMDistanceChargement }	{ Data= ValeurItem 1 0.0 }}
+		{ Champ= { Type= P0C_Scalaire_Par }	{ Nom= BLMFty }					{ Data= ValeurItem 1 750 }}	
+		// Ground
+      	{ Champ= { Type= P0C_Scalaire_Par }	{ Nom= BLMDeuxGround }					{ Data= ValeurItem 1 2 }}
+		{ Champ= { Type= P0C_Scalaire_Par }	{ Nom= BLMUnGround }					{ Data= ValeurItem 1 1 } }
+		{ Champ= { Type= P0C_Scalaire_Par }	{ Nom= BLMEpsilonMeshGround }			{ Data= ValeurItem 1 -0.025 }} // 4
+		{ Champ= { Type= P0C_Scalaire_Par }	{ Nom= BLMOneGround }					{ Data= ValeurItem 1 1 }}
+		{ Champ= { Type= P0C_Scalaire_Par }	{ Nom= BLMZeroGround }					{ Data= ValeurItem 1 0 }}		
+		{ Champ= { Type= P0C_Scalaire_Par }	{ Nom= BLMMOneGround }					{ Data= ValeurItem 1 -1 }}
+		{ Champ= { Type= P0C_Scalaire_Par }	{ Nom= BLMHalfGround }					{ Data= ValeurItem 1 0.5 }}	
+		{ Champ= { Type= P1_Scalaire_Par }	{ Nom= BLMDistanceChargementGround }	{ Data= ValeurItem 1 0.0 }}
+		{ Champ= { Type= P0C_Scalaire_Par }	{ Nom= BLMFtyGround }					{ Data= ValeurItem 1 750 }}		
+    }
+    { Dependance= 
+        { Maillage= MaillagePrincipal }
+    }
+}

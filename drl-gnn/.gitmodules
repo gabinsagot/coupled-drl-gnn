@@ -1,0 +1,7 @@
+[submodule "external/pbo"]
+	path = external/pbo
+	url = https://github.com/theodore-michel/pbo.git
+[submodule "external/graph_physics"]
+	path = external/graph_physics
+	url = https://github.com/theodore-michel/graph-physics.git
+	branch = predict-panels

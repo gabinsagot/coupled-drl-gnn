@@ -1,0 +1,374 @@
+
+{ MetriqueGenerale=
+  { Type= ModeleDeModeles }
+    { Data=
+		{ Champ= 
+			{ Type= P0C_Vecteur_Par }
+			{ Nom= ZEROVg }
+			{ Data= 1 8 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0  }
+		}
+		{ Champ= 
+			{ Type= P0C_Vecteur_Par }
+			{ Nom= ZEROTg }
+			{ Data= 1 24 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 }
+		}
+		{ Champ= 
+			{ Type= P1_Vecteur_Par }
+			{ Nom= UX2 }
+			{ Data= ValeurItem 24 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 }
+		}
+		{ Champ= 
+			{ Type= P1_Vecteur_Par }
+			{ Nom= LeVecteur }
+			{ Data= ValeurItem 8 0.0 0.0  0.0  0.0 0.0  0.0  0.0  0.0 0.0  0.0  }
+		}
+  		{ Champ= 
+			{ Type= P1_Vecteur_Par }
+			{ Nom= Gradient2 }
+			{ Data= ValeurItem 24 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0  0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 }
+		}
+		{ Champ= 
+			{ Type= P1_Scalaire_Par }
+			{ Nom= LaFonction }
+			{ Data= ValeurItem 1 0.0   }
+		}
+		{ Champ= 
+			{ Type= P1_Tenseur_Par }
+			{ Nom= TailleDeMaille }
+			{ Data= ValeurItem 4 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 }
+       	}
+		{ Champ= 
+			{ Type= P1_Tenseur_Par }
+			{ Nom= MeTC }
+			{ Data: Dimension/tenseur.txt }
+		}
+		{ Champ= 
+			{ Type= P1_Tenseur_Par }
+			{ Nom= XX }
+			{ Data: Dimension/tenseur.txt }
+		}
+		{ Champ= 
+			{ Type= P1_Vecteur_Par }
+			{ Nom= UX }
+			{ Data= ValeurItem 3 0 0.0 0.0  }
+		}
+		{ Champ= 
+			{ Type= P1_Scalaire_Par }
+			{ Nom= Compt }
+			{ Data= ValeurItem 1 0.0   }
+		}
+		{ Champ= 
+			{ Type= P0C_Scalaire_Par }
+			{ Nom= NbElements }
+			{ Data= ValeurItem 1 4000   }
+		}
+		{ Champ= 
+			{ Type= P0C_Scalaire_Par }
+			{ Nom= LeC }
+			{ Data= ValeurItem 1 0.0   }
+		}
+		{ Champ= 
+			{ Type= P0C_Scalaire_Par }
+			{ Nom= LaC }
+			{ Data= ValeurItem 1 0.0   }
+		}
+		{ Champ= 
+			{ Type= P0C_Scalaire_Par }
+			{ Nom= ErreurL1 }
+			{ Data= ValeurItem 1 0.0 }
+		}
+  		{ Champ= 
+			{ Type= P1_Vecteur_Par }
+			{ Nom= Gradient }
+			{ Data= ValeurItem 2 0.0 0.0   }
+  		}
+		{ Champ= 
+			{ Type= P1_Scalaire_Par }
+			{ Nom= Erreur }
+			{ Data= ValeurItem 1 0.0   }
+		}
+		{ Champ= 
+			{ Type= P0_Scalaire_Par }
+			{ Nom= ErrReg }
+			{ Data= ValeurItem 1 0.0001   }
+		}
+		{ Champ= 
+			{ Type= P0C_Scalaire_Par }
+			{ Nom= hMin }
+			{ Data= ValeurItem 1 0.001   }
+		}
+		{ Champ= 
+			{ Type= P0C_Scalaire_Par }
+			{ Nom= sMax }
+			{ Data= ValeurItem 1 8  }
+		}
+	}
+	{ Dependance=  
+        { Maillage= MaillagePrincipal }
+  		{ Modele= Zero } 
+ 		{ Modele= CalculXX } 
+ 		{ Modele= GradA } 
+ 		{ Modele= CalculXX2 } 
+ 		{ Modele= LeLec } 
+ 		{ Modele= CalculXX3 } 
+ 		{ Modele= GradA2 } 
+		{ Modele= IntegreErreur } 
+ 		{ Modele= ErreurL1 }
+	}			
+}
+
+
+{ Zero=
+ 	{ Type= ModeleArithmetique }
+	{ Data= 
+		{ Champ= 
+			{ Type= P0C_Scalaire_Par }
+			{ Nom= ZERO }
+			{ Data= 1 1 0.0 }
+		}
+		{ Champ= 
+			{ Type= P0C_Vecteur_Par }
+			{ Nom= ZEROV }
+			{ Data= 1 3 0.0 0.0 0.0 0.0  }
+		}
+		{ Champ= 
+			{ Type= P0C_Tenseur_Par }
+			{ Nom= ZEROT }
+			{ Data= 1 9 0 0 0 0 0 0.0 0.0 0.0 0.0 0.0 }
+		}
+	}
+	{ Dependance= 
+        { Maillage= MaillagePrincipal }
+        { Champ= ZERO }
+        { Champ= ZEROV }
+        { Champ= ZEROT }
+        { Champ= ZEROTg }
+	}
+
+	{ Operation= ErreurL1 = ZERO }
+	{ Operation= LaC = ZERO }
+	{ Operation= Compt = ZERO }
+	{ Operation= XX = ZEROT }
+	{ Operation= UX = ZEROV }
+	{ Operation= UX2 = ZEROTg }
+	{ Operation= Gradient = ZEROV }
+	{ Operation= Gradient2 = ZEROTg }
+	{ Operation= Erreur = ZERO }
+}
+
+{ CalculXX=
+	{ Type= ModeleFonctionnel }
+	{ Data=
+		{ SimplexSolveurFonctionnel=
+			{ Type= SsfMaTC }
+			{ Passe= 1 }
+			{ NbChampSolution= 2 }
+			{ ChampSolution= UX2 XX }
+			{ OperationsP1=
+				{ NbChampsP1= 2 }
+				{ Numero= 0 1 }
+				{ Initialise= 0.0 0 0 }
+				{ Operateur= += += }
+				{ Moyenner= 0 0 }
+			}
+			{ NbChampParametre= 1 }
+			{ ChampParametre= LeVecteur }
+		}
+	}
+	{ Dependance=
+		{ Maillage= MaillagePrincipal }
+		{ Champ= LeVecteur  }
+		{ Champ= LaFonction }
+	}
+}
+
+
+{ GradA=
+   { Type= ModeleParticulaire }
+   { Data=
+	
+        { ItemSolveur=
+            { Type= ISMaTC } 
+            { Dimension: Dimension/dim.txt } 
+            { NbChampSolution= 2 }
+            { ChampSolution= Gradient2 LeC }
+            { NbChampParametre= 2 }
+            { ChampParametre= XX UX2 } 
+        }
+	
+    }
+	
+    { Dependance=
+        { Maillage= MaillagePrincipal }
+        { Champ= XX }
+        { Champ= UX2 }
+    }
+}
+{ CalculXX2=
+	{ Type= ModeleFonctionnel }
+	{ Data=
+		{ SimplexSolveurFonctionnel=
+			{ Type= SsfMaTC }
+			{ Passe= 2 }
+			{ p= 1.5 }
+			{ NbChampSolution= 3  }
+			{ ChampSolution= LeC Erreur ErreurL1 }
+			{ OperationsP1=
+				{ NbChampsP1= 2 }
+				{ Numero= 0 1  }
+				{ Initialise= 0.0 0.0 0.0 }
+				{ Operateur= +=  += }
+				{ Moyenner= 0  0 }
+			}
+			{ NbChampParametre= 3 }
+			{ ChampParametre= Gradient2 ErrReg hMin }
+		}
+	}
+	{ Dependance=
+		{ Maillage= MaillagePrincipal }
+		{ Champ= Gradient2 }
+		{ Champ= ErrReg  }
+		{ Champ= hMin  }
+	}
+}
+
+{ LeLec=
+	{ Type= ModeleParticulaire }
+	{ Data=
+
+		{ ItemSolveur=
+			{ Type= ISSomme }
+			{ NbChampSolution= 1 }
+			{ ChampSolution= LaC }
+			{ NbChampParametre= 1 }
+			{ ChampParametre= Erreur }
+		      { Operations=
+            		{ NbChampsATraiter= 1 }
+            		{ Numero= 0 }
+            		{ Initialise= Zeros }
+            		{ Moyenner= 0 }
+         		}
+		}
+	}
+    { Dependance=
+        { Maillage= MaillagePrincipal }
+        { Champ= Erreur }
+        { Champ= Zeros }
+    }
+} 
+ 
+ 
+{ CalculXX3=
+	{ Type= ModeleFonctionnel }
+	{ Data=
+		{ Champ= 
+			{ Type= P0C_Scalaire_Par }
+			{ Nom= hMinimal }
+			{ Data= ValeurItem 1 0.0001   }
+		}
+		{ SimplexSolveurFonctionnel=
+			{ Type= SsfMaTC }
+			{ Passe= 3 }
+			{ p= 1.5  }
+			{ NbChampSolution= 2 }
+			{ ChampSolution= MeTC Compt }
+			{ OperationsP1=
+				{ NbChampsP1= 2 }
+				{ Numero= 0 1 }
+				{ Initialise= 0.0 0 }
+				{ Operateur= += += }
+				{ Moyenner= 0 0 }
+			}
+			{ NbChampParametre= 6 }
+			{ ChampParametre= Gradient2 LaC NbElements ErrReg hMin sMax }
+		}
+	}
+	{ Dependance=
+		{ Maillage= MaillagePrincipal }
+		{ Champ= Gradient2 }
+		{ Champ= LaC }
+		{ Champ= LeC }
+		{ Champ= NbElements }
+		{ Champ= ErrReg  }
+		{ Champ= hMin  }
+		{ Champ= sMax  }
+
+	}
+}
+
+{ GradA2=
+   { Type= ModeleParticulaire }
+   { Data=
+	
+        { ItemSolveur=
+            { Type= ISMaTC } 
+ 			{ Passe= 2 }
+            { Dimension: Dimension/dim.txt } 
+           { NbChampSolution= 2 }
+            { ChampSolution= MeTC Erreur }
+            { NbChampParametre= 1 }
+            { ChampParametre=  Compt } 
+        }
+	
+    }
+    { Dependance=
+        { Maillage= MaillagePrincipal }
+        { Champ= Compt }
+    }
+}
+
+
+
+{ IntegreErreur=
+   { Type= ModeleFonctionnel }
+   { Data=
+      { Champ=
+         { Type= P0_Scalaire_Par }
+         { Nom= IntegraleErreur }
+         { Data= ValeurItem 1 0.0 }
+      }
+      { Boucle= Volume }
+      { SimplexSolveurFonctionnel=
+         { Type= SsfIntegre }
+         { NbChampSolution= 1 }
+         { ChampSolution= IntegraleErreur }
+         { NbChampParametre= 1 }
+         { ChampParametre= Erreur }
+      }
+   }
+   { Dependance=
+         { Maillage= MaillagePrincipal }
+       { Champ= Erreur }
+   }
+}
+
+{ ErreurL1=
+	{ Type= ModeleParticulaire }
+	{ Data=
+		{ Champ= 
+			{ Type= P0C_Scalaire_Par }
+			{ Nom= Zeros }
+			{ Data= ValeurItem 1 0.0 }
+		}
+		{ Boucle= Volume }
+		{ ItemSolveur=
+			{ Type= ISSomme }
+			{ NbChampSolution= 1 }
+			{ ChampSolution= ErreurL1 }
+			{ NbChampParametre= 1 }
+			{ ChampParametre= IntegraleErreur }
+		      { Operations=
+            		{ NbChampsATraiter= 1 }
+            		{ Numero= 0 }
+            		{ Initialise= Zeros }
+            		{ Moyenner= 0 }
+         		}
+		}
+	}
+    { Dependance=
+        { Maillage= MaillagePrincipal }
+        { Champ= IntegraleErreur }
+        { Champ= Zeros }
+    }
+ } 
+ 

@@ -1,0 +1,27 @@
+{ Lanceur= setupclean } 
+
+
+{ setupclean =
+    { Type= ModeleDeModeles }
+    { Dependance=  
+        { Maillage= MaillagePrincipal }
+        { Modele= Geometres }
+        { Modele= Sorties }
+    }
+ }
+
+
+Increments
+{ Fichier: Increments/temps.mtc }
+
+Maillage
+{ Fichier: Maillage/maillage.mtc }
+
+Geometrie
+{ Fichier: Geometrie/Geometres.mtc }
+{ Fichier: Geometrie/GeometresE.mtc }
+
+IO	
+{ Fichier: IO/output.mtc }
+{ Fichier: IO/Parametres.mtc }
+{ Fichier: IO/Interacteur.mtc }

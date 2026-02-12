@@ -1,0 +1,25 @@
+{ Sorties=
+    { Type= ModeleSortie }
+    { Data= 
+		{ Champ= 
+				{ Type= P0C_Scalaire_Par }
+				{ Nom= FrequenceStockage_vtk }
+				{ Data= ValeurItem 1 1 }                        
+		}
+        { NomFichier= mesh } 
+        { NomFrequence= FrequenceStockage_vtk }
+        { NomCompteur= CompteurTemps }
+        { TypeFichier= SortieVtu }
+    }
+    { Dependance= 
+        { Maillage= MaillagePrincipal }
+        { Champ= CompteurTemps }
+    }
+
+    { DependanceAEcrire= 
+        { Maillage= MaillagePrincipal }	 	 
+        { Champ= Temps } 
+        { Champ= LevelSetObject }
+        { Champ= NodeType }
+    }
+}

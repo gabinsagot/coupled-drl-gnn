@@ -1,0 +1,597 @@
+{ BLMSurfaceGround=
+    { Type= ModeleDeModeles }
+	{ Dependance=        
+		{ Maillage= MaillagePrincipal }
+		{ Modele= BLMRepere2Ground }
+		{ Modele= BLMGeo2Ground }
+		{ Modele= BLMDistance2Ground }
+		{ Modele= BLMRepere3Ground } 
+		{ Modele= BLMGeo3Ground } 
+		{ Modele= BLMDistance3Ground }
+    }
+}
+
+{ BLMMeshPreparationGround= 
+	{ Type= ModeleDeModeles }
+   	{ Data=
+        { Champ= { Type= P0C_Scalaire_Par }	{ Nom= BLMHbox1Ground }				{ Data= ValeurItem 1 0.002 }}
+		{ Champ= { Type= P0C_Scalaire_Par }	{ Nom= BLMHbox2Ground }				{ Data= ValeurItem 1 0.2 }}
+		{ Champ= { Type= P0C_Scalaire_Par }	{ Nom= BLMHbox3Ground }				{ Data= ValeurItem 1 2 }}
+		{ Champ= { Type= P0C_Scalaire_Par }	{ Nom= BLMHbox4Ground }				{ Data= ValeurItem 1 0.5 }}
+		{ Champ= { Type= P0C_Scalaire_Par }	{ Nom= BLMBoxGround }				{ Data= ValeurItem 1 0 }}
+		{ Champ= { Type= P1_Scalaire_Par }	{ Nom= BLMMeshsizeTGround }			{ Data= ValeurItem 1 0 }}
+		{ Champ= { Type= P1_Scalaire_Par }	{ Nom= BLMMeshsizeGround }			{ Data= ValeurItem 1 0 }}
+		{ Champ= { Type= P1_Scalaire_Par }	{ Nom= BLMMeshsizebisGround }		{ Data= ValeurItem 1 0 }}
+		{ Champ= { Type= P1_Scalaire_Par }	{ Nom= BLMMeshsize1Ground }			{ Data= ValeurItem 1 0 }}
+		{ Champ= { Type= P1_Scalaire_Par }	{ Nom= BLMMeshsize11Ground }		{ Data= ValeurItem 1 0 }}
+		{ Champ= { Type= P1_Scalaire_Par }	{ Nom= BLMMeshsize2Ground }			{ Data= ValeurItem 1 0 }}
+		{ Champ= { Type= P1_Scalaire_Par }	{ Nom= BLMMeshsize3Ground }			{ Data= ValeurItem 1 0 }}
+		{ Champ= { Type= P1_Scalaire_Par }	{ Nom= BLMIndicatorGround }			{ Data= ValeurItem 1 0 }}
+		{ Champ= { Type= P1_Scalaire_Par }	{ Nom= BLMLevelSetLayer1bisGround }	{ Data= ValeurItem 1 0 }}
+		{ Champ= { Type= P1_Scalaire_Par }	{ Nom= BLMLevelSetLayer2bisGround }	{ Data= ValeurItem 1 0 }}
+		{ Champ= { Type= P1_Scalaire_Par }	{ Nom= BLMLevelSetLayer3bisGround }	{ Data= ValeurItem 1 0 }}
+		{ Champ= { Type= P0C_Scalaire_Par }	{ Nom= BLMFacteur0Ground }			{ Data= ValeurItem 1 1 }}
+		{ Champ= { Type= P0C_Scalaire_Par }	{ Nom= BLMFacteurGround }			{ Data= ValeurItem 1 0.7 }}
+		{ Champ= { Type= P0C_Scalaire_Par }	{ Nom= BLMGrowthGround }			{ Data= ValeurItem 1 1.2 }}
+		{ Champ= { Type= P0C_Scalaire_Par }	{ Nom= BLMLayersGround }			{ Data= ValeurItem 1 20 }}
+		{ Champ= { Type= P1_Scalaire_Par }	{ Nom= BLMHbox1MAxGround }			{ Data= ValeurItem 1 0 }}
+		{ Champ= { Type= P1_Scalaire_Par }	{ Nom= BLMHighlightGround }			{ Data= ValeurItem 1 0 }}
+		{ Champ= { Type= P0C_Scalaire_Par }	{ Nom= BLMFactorDGround }			{ Data= ValeurItem 1 1 }}
+		{ Champ= { Type= P0C_Scalaire_Par }	{ Nom= BLMRatioGround }  			{ Data= ValeurItem 1 1 }}
+		{ Champ= { Type= P0C_Scalaire_Par }	{ Nom= BLMAnisotropicGround }		{ Data= ValeurItem 1 1 }}
+		{ Champ= { Type= P0C_Scalaire_Par }	{ Nom= BLMInverseLevelSetGround }	{ Data= ValeurItem 1 0 }}
+		{ Champ= { Type= P1_Tenseur_Par }	{ Nom= BLMTailleDeMaille1Ground }	{ Data= ValeurItem 4 1 0 0 1 }} 
+        { Champ= { Type= P0_Vecteur_Par }	{ Nom= BLMGradientLevelSetGround }	{ Data= ValeurItem 2 0 0 }}
+        { Champ= { Type= P1_Vecteur_Par }	{ Nom= BLMGradientLevelSetP1Ground }{ Data= ValeurItem 2 0 0 }}
+	}
+	{ Dependance=  
+        { Maillage= MaillagePrincipal } 	
+		{ Modele= BLMInverseLevelSetGround }
+		// { Modele= BLMUpdate2Ground }
+		{ Modele= BLMComputeMeshsize1Ground }
+        { Modele= BLMUpdateLevelSetMeshSizeGround } 	
+        { Modele= BLMMaxMeshsize2Ground } 	
+        { Modele= BLMMaxMeshsize3Ground } 
+		{ Modele= BLMCalculGradientLevelSetGround }
+		{ Modele= BLMCalculGradientLevelSetP1Ground }
+		{ Modele= BLMUpdateGradientMeshGround }
+		{ Modele= BLMComputeMeshsize2Ground }
+        // { Modele= BLMTestingMeshSizeGround }
+        // { Modele= BLMMakeSum0Ground } 	
+        // { Modele= BLMMakeSumGround } 	
+		// { Modele= BLMMakeSum1Ground } 
+	}
+}
+
+
+{ BLMMixMetriques=
+	{ Type= ModeleParticulaire }
+	{ Data=
+		{ Champ= { Type= P1_Tenseur_Par }	{ Nom= BLMMixedMetrique }	{ Data= ValeurItem 4 1 0 0 1 } }
+		{ ItemSolveur=
+			{ Type= ISIntersectionMetrique }
+			{ Methode= 3 }	// 3
+			{ Coefficients= 1 1 }
+			{ NbChampSolution= 1 }
+			{ ChampSolution= BLMMixedMetrique }
+			{ NbChampParametre= 2 }
+			{ ChampParametre= BLMTailleDeMaille1 BLMTailleDeMaille1Ground }
+		}
+	}
+	{ Dependance=
+		{ Maillage= MaillagePrincipal }
+		{ Champ= BLMTailleDeMaille1 }
+		{ Champ= BLMTailleDeMaille1Ground }
+	}
+	{ DependanceModifiable=
+		{ Champ= BLMMixedMetrique }
+	}
+}
+
+
+
+// *****************************************************
+// Sous-Modeles Ground
+// *****************************************************
+
+{ BLMUpdate2Ground=
+    { Type= ModeleArithmetique }
+    { Dependance= 
+        { Maillage= MaillagePrincipal }
+		{ Champ= BLMLevelSetLayer1Ground } 
+		{ Champ= BLMZeroGround } 
+		{ Champ= BLMFtyGround } 
+    }
+    { DependanceModifiable= 
+		{ Champ= BLMLevelSetLayer2Ground }  
+		{ Champ= BLMAppartient2Ground }  
+    }	
+	{ Operation= BLMLevelSetLayer2Ground = BLMLevelSetLayer1Ground }	
+	{ Operation= BLMLevelSetLayer2Ground += BLMFtyGround }	
+	{ Operation= BLMAppartient2Ground = BLMLevelSetLayer2Ground }	
+	{ Operation= BLMAppartient2Ground >=? BLMZeroGround }	
+}
+// *****************************************************
+// *****************************************************
+{ BLMInverseLevelSetGround=
+   { Type= ModeleConditionnel }
+   { Dependance=
+      { Maillage= MaillagePrincipal }
+      { ChampCondition= BLMInverseLevelSetGround }
+      { ModeleTrue= BLMProblemLevelsetGround }
+      { ModeleFalse= BLMLevelsetOKGround }
+   }
+}
+{ BLMProblemLevelsetGround=
+    { Type= ModeleArithmetique }
+    { Dependance= 
+        { Maillage= MaillagePrincipal }
+        { Champ= BLMMOneGround }
+        { Champ= BLMOneGround }
+    }
+    { DependanceModifiable= 
+        { Champ= BLMLevelSetLayer1Ground } 
+        { Champ= BLMHighlightGround } 
+        { Champ= BLMAppartient1Ground } 
+    }
+	{ Operation= BLMLevelSetLayer1Ground *= BLMMOneGround }
+	{ Operation= BLMHighlightGround = BLMOneGround }
+	{ Operation= BLMHighlightGround -= BLMAppartient1Ground }
+	{ Operation= BLMAppartient1Ground = BLMHighlightGround }
+	{ Operation= BLMHighlightGround = BLMLevelSetLayer1Ground }	
+}
+{ BLMLevelsetOKGround=
+    { Type= ModeleArithmetique }
+    { Dependance= 
+        { Maillage= MaillagePrincipal }
+        { Champ= BLMMOneGround }
+        { Champ= BLMOneGround }
+		{ Champ= BLMLevelSetLayer1Ground } 
+    }
+    { DependanceModifiable= 
+      { Champ= BLMHighlightGround }  
+    }	
+	{ Operation= BLMHighlightGround = BLMLevelSetLayer1Ground }	
+}
+// *****************************************************
+// *****************************************************
+
+{ BLMComputeMeshsize1Ground=
+   	{ Type= ModeleParticulaire }
+   	{ Data=
+     	{ ItemSolveur=
+			{ Type= ISCoucheLimitef1 }
+			{ NbChampSolution= 3 }
+			{ ChampSolution= BLMTailleDeMaille1Ground BLMLevelSetLayer1Ground BLMMeshsize11Ground }
+			{ NbChampParametre= 15 }
+			{ ChampParametre= BLMHbox1Ground BLMLayersGround BLMGrowthGround BLMLevelSetLayer1Ground BLMGradientLevelSetP1Ground BLMMaxMesh2Ground BLMHbox2Ground BLMLevelSetLayer2Ground BLMMaxMesh3Ground BLMHbox3Ground BLMRatioGround BLMCompteurTemps BLMAnisotropicGround BLMDistanceChargementGround BLMHbox4Ground }
+      	}
+   	}
+   	{ Dependance=
+		{ Maillage= MaillagePrincipal }
+		{ Champ= BLMHbox1Ground }
+		{ Champ= BLMLayersGround }
+		{ Champ= BLMGrowthGround }
+		{ Champ= BLMLevelSetLayer1Ground }
+		{ Champ= BLMLevelSetLayer2Ground }
+		{ Champ= BLMGradientLevelSetP1Ground }
+		{ Champ= BLMDistanceChargementGround }
+		{ Champ= BLMMaxMesh2Ground }
+		{ Champ= BLMMaxMesh3Ground }
+		{ Champ= BLMHbox2Ground }
+		{ Champ= BLMHbox3Ground }
+		{ Champ= BLMHbox4Ground }
+		{ Champ= BLMBoxGround }
+		{ Champ= BLMRatioGround }
+		{ Champ= BLMCompteurTemps } // same for BLM Object and BLM Ground
+		{ Champ= BLMAnisotropicGround }
+	}
+	{ DependanceModifiable=  
+        { Champ= BLMTailleDeMaille1Ground }  
+        { Champ= BLMMeshsize11Ground }  
+        { Champ= BLMLevelSetLayer1Ground }  
+    }
+}
+
+// *****************************************************
+// *****************************************************
+// *****************************************************
+
+{ BLMUpdateLevelSetMeshSizeGround=
+    { Type= ModeleArithmetique }
+    { Dependance= 
+        { Maillage= MaillagePrincipal }
+        { Champ= BLMMOneGround }
+        { Champ= BLMLevelSetLayer1Ground }
+        { Champ= BLMLevelSetLayer2Ground }
+        { Champ= BLMAppartient2Ground } 
+        { Champ= BLMHbox1MAxGround } 
+        { Champ= BLMFactorDGround }  
+    }
+    { DependanceModifiable= 
+        { Champ= BLMLevelSetLayer2bisGround }  
+        { Champ= BLMIndicatorGround }  
+    }
+    { Operation= BLMLevelSetLayer2bisGround = BLMLevelSetLayer2Ground }
+	{ Operation= BLMLevelSetLayer2bisGround *= BLMMOneGround }
+	{ Operation= BLMLevelSetLayer2bisGround *= BLMFactorDGround }
+	{ Operation= BLMIndicatorGround = BLMLevelSetLayer1Ground }
+	{ Operation= BLMIndicatorGround *= BLMMOneGround }
+	{ Operation= BLMIndicatorGround *= BLMFactorDGround }
+	{ Operation= BLMIndicatorGround *= BLMAppartient2Ground }
+}
+
+{ BLMMaxMeshsize2Ground=
+	{ Type= ModeleParticulaire }
+	{ Data=
+		{ Champ= { Type= P0C_Scalaire_Par }{ Nom= BLMMaxMesh2Ground }{ Data= ValeurItem 1 0 }}
+      	{ ItemSolveur=
+			{ Type= ISMax }
+			{ NbChampSolution= 1 }
+			{ ChampSolution= BLMMaxMesh2Ground }
+			{ NbChampParametre= 1 }
+			{ ChampParametre= BLMIndicatorGround }
+      	}
+   	}
+   	{ Dependance=
+		{ Maillage= MaillagePrincipal }
+		{ Champ= BLMMeshsize2Ground }
+		{ Champ= BLMIndicatorGround }
+   	}
+}
+{ BLMMaxMeshsize3Ground=
+   	{ Type= ModeleParticulaire }
+  	{ Data=
+		{ Champ= { Type= P0C_Scalaire_Par }{ Nom= BLMMaxMesh3Ground }{ Data= ValeurItem 1 0 }}
+      	{ ItemSolveur=
+			{ Type= ISMax }
+			{ NbChampSolution= 1 }
+			{ ChampSolution= BLMMaxMesh3Ground }
+			{ NbChampParametre= 1 }
+			{ ChampParametre= BLMLevelSetLayer2bisGround }
+      	}
+   	}
+   	{ Dependance=
+		{ Maillage= MaillagePrincipal }
+		{ Champ= BLMLevelSetLayer2bisGround }
+   	}
+}
+
+// *****************************************************
+// *****************************************************
+// *****************************************************
+
+
+{ BLMComputeMeshsize2Ground=
+   	{ Type= ModeleParticulaire }
+   	{ Data=
+     	{ ItemSolveur=
+			{ Type= ISCoucheLimitef1 }
+			{ NbChampSolution= 3 }
+			{ ChampSolution= BLMTailleDeMaille1Ground BLMMeshsize3Ground BLMMeshsize2Ground }
+			{ NbChampParametre= 15 }
+			{ ChampParametre= BLMHbox1Ground BLMLayersGround BLMGrowthGround BLMHighlightGround BLMGradientLevelSetP1Ground BLMMaxMesh2Ground BLMHbox2Ground BLMLevelSetLayer2Ground BLMMaxMesh3Ground BLMHbox3Ground BLMRatioGround BLMCompteurTemps BLMAnisotropicGround BLMDistanceChargementGround BLMHbox4Ground } // BOX 
+      	}
+  	}
+   	{ Dependance=
+      	{ Maillage= MaillagePrincipal }
+		{ Champ= BLMHbox1Ground }
+		{ Champ= BLMLayersGround }
+		{ Champ= BLMGrowthGround }
+		{ Champ= BLMLevelSetLayer1Ground }
+		{ Champ= BLMLevelSetLayer2Ground }
+		{ Champ= BLMDistanceChargementGround }
+		{ Champ= BLMHighlightGround }
+		{ Champ= BLMGradientLevelSetP1Ground }
+		{ Champ= BLMMaxMesh2Ground }
+		{ Champ= BLMMaxMesh3Ground }
+		{ Champ= BLMHbox2Ground }
+		{ Champ= BLMHbox3Ground }
+		{ Champ= BLMHbox4Ground }
+		{ Champ= BLMBoxGround }
+		{ Champ= BLMRatioGround }
+		{ Champ= BLMCompteurTemps } // same for BLM Object and BLM Ground
+		{ Champ= BLMAnisotropicGround }
+		
+   	}
+	{ DependanceModifiable=  
+        { Champ= BLMTailleDeMaille1Ground }  
+        { Champ= BLMMeshsize11Ground }  
+        { Champ= BLMMeshsize2Ground }  
+        { Champ= BLMLevelSetLayer1Ground }  
+    }
+}
+
+
+// *****************************************************
+// *****************************************************
+// *****************************************************
+
+
+
+{ BLMMakeSum0Ground=
+	{ Type= ModeleFonctionnel }
+	{ Data=
+		{ Champ= { Type= P0_Scalaire_Par }{ Nom= BLMAppartient1P0Ground }{ Data= ValeurItem 1 0 }}
+		{ SimplexSolveurFonctionnel=
+			{ Type= SsfP1P0 }
+			{ NbChampSolution= 1 }
+			{ ChampSolution= BLMAppartient1P0Ground }
+			{ NbChampParametre= 1 }
+			{ ChampParametre= BLMAppartient1Ground  }
+		}
+	}
+	{ Dependance=
+		{ Maillage= MaillagePrincipal }
+		{ Champ= BLMAppartient1Ground }
+	}
+}
+
+
+{ BLMMakeSumGround=
+	{ Type= ModeleParticulaire }
+	{ Data=
+        { Champ= { Type= P0C_Scalaire_Par }{ Nom= BLMCountP0Ground }{ Data= ValeurItem 1 0 }}
+		{ ItemSolveur=
+			{ Type= ISSomme }
+			{ NbChampSolution= 1 }
+			{ ChampSolution= BLMCountP0Ground }
+			{ NbChampParametre= 1 }
+			{ ChampParametre= BLMAppartient1Ground }
+			{ Operations=
+				{ NbChampsATraiter= 1 }
+				{ Numero= 0 }
+				{ Initialise= BLMZeroGround }
+				{ Moyenner= 0 }
+			}
+		}
+	}
+    { Dependance=
+        { Maillage= MaillagePrincipal }
+        { Champ= BLMAppartient1Ground }
+        { Champ= BLMZeroGround }
+    }
+} 
+
+
+{ BLMMakeSum1Ground=
+	{ Type= ModeleCapteur }
+	{ Data= 
+		{ NomFichier= NbrOfInternalNodesGround }
+		{ NbCapteurs= 1 }		
+		{ HAdaptation= 1 }		
+		{ Dimension= 2 }
+		{ Coordonnees= 
+			{ Point1= 0 0 }			
+		}
+	}
+	{ Dependance= 
+		{ Maillage= MaillagePrincipal }
+		{ Champ= BLMCountP0Ground }
+	}
+}
+
+
+{ BLMCalculGradientLevelSetGround=
+    { Type= ModeleFonctionnel }
+    { Data=
+        { SimplexSolveurFonctionnel=
+            { Type= SsfGradient }
+            { NbChampSolution= 1 }
+            { ChampSolution= BLMGradientLevelSetGround }
+            { NbChampParametre= 1 }
+            { ChampParametre= BLMHighlightGround } 
+        }
+    }
+    { Dependance=
+        { Maillage= MaillagePrincipal }
+        { Champ= BLMHighlightGround }
+    }
+	{ DependanceModifiable=  
+        { Champ= BLMGradientLevelSetGround }  
+    }
+}
+
+{ BLMCalculGradientLevelSetP1Ground=
+    { Type= ModeleFonctionnel }
+    { Data=
+        { SimplexSolveurFonctionnel=
+            { Type= SsfTest }
+            { NbChampSolution= 1 }
+            { ChampSolution= BLMGradientLevelSetP1Ground }
+            { OperationsP1=
+                { NbChampsP1= 1 }
+                { Numero= 0 }
+                { Initialise= 0.0 }
+                { Moyenner= 1 }
+                { Operateur= += } 
+            }
+            { NbChampParametre= 1 }
+            { ChampParametre= BLMGradientLevelSetGround  }
+        }
+    }
+    { Dependance=
+        { Maillage= MaillagePrincipal }
+        { Champ= BLMGradientLevelSetGround }
+    }
+	{ DependanceModifiable=  
+        { Champ= BLMGradientLevelSetP1Ground }  
+    }
+}
+
+// **********************************************
+// **********************************************
+// **********************************************
+// Geometres Ground
+
+
+{ BLMRepere2Ground=
+	{ Type= ModeleDeMouvements }
+	{ Data=
+		{ Repere=
+			{ Dimension= 2 }
+			{ Nom= BLMR2Ground }
+			{ Origine: BLM/GroundParams/OriginBox2Ground.txt }
+			{ Axes= 1 0 0 1 }
+		}
+	}
+}
+{ BLMGeo2Ground=
+	{ Type= ModeleDeGeometres }
+	{ Data=
+		{ Geometre=
+			{ Nom= BLMBox2Ground }
+			{ Type= GeometreAnalytique }
+			{ Data=
+				{ Forme= 
+					{ Type= Brique }
+					{ Dimension= 2 }
+					{ Data=
+						{ Dimension: BLM/GroundParams/DimBox2Ground.txt }
+					}
+				}
+				{ Repere= BLMR2Ground }
+			}
+		}
+		
+	}
+	{ Dependance=
+		{ Maillage= MaillagePrincipal }
+		{ Modele= BLMRepere2Ground }
+	}
+}
+
+
+{ BLMDistance2Ground=
+	{ Type= ModeleParticulaire }
+	{ Data=
+		{ Champ= 
+			{ Type= P1_Scalaire_Par }
+			{ Nom= BLMLevelSetLayer2Ground }
+			{ Data= ValeurItem 1 0.0 }                        // ##
+		}
+		{ Champ= 
+			{ Type= P1_Scalaire_Par }
+			{ Nom= BLMAppartient2Ground }
+			{ Data= ValeurItem 1 0.0 }                        // ##
+		}
+		{ ItemSolveur=
+			{ Type= ISGeometre }
+			{ NbChampSolution= 2 }
+			{ ChampSolution= BLMAppartient2Ground BLMLevelSetLayer2Ground }
+			{ NbChampParametre= 2 }
+			{ ChampParametre= Coordonnees BLMPrecisionFrontieres }
+			{ Geometre= BLMBox2Ground }
+			{ Distance= 1 }
+			{ Appartient= 1 }
+		}
+	}
+	{ Dependance=
+		{ Maillage= MaillagePrincipal }
+		{ Champ= Coordonnees }
+		{ Champ= BLMPrecisionFrontieres }
+	}
+}
+
+
+
+{ BLMRepere3Ground=
+	{ Type= ModeleDeMouvements }
+	{ Data=
+		{ Repere=
+			{ Dimension= 2 }
+			{ Nom= BLMR3Ground }
+			{ Origine: BLM/GroundParams/OriginGround.txt }
+			{ Axes= 1 0 0 1 }
+		}
+	}
+}
+
+{ BLMGeo3Ground=
+	{ Type= ModeleDeGeometres }
+	{ Data=
+		{ Geometre=
+			{ Nom= BLMSurfaceGround }
+			{ Type= GeometreAnalytique }
+			{ Data=
+				{ Forme= 
+					{ Type= Brique }
+					{ Dimension= 2 }
+					{ Data=
+						{ Dimension: BLM/GroundParams/DimGround.txt }
+					}
+				}
+				{ Repere= BLMR3Ground }
+			}
+		}
+	}
+	{ Dependance=
+		{ Maillage= MaillagePrincipal }
+		{ Modele= BLMRepere3Ground }
+	}
+}
+
+{ BLMDistance3Ground=
+	{ Type= ModeleParticulaire }
+	{ Data=
+		{ Champ= { Type= P1_Scalaire_Par }	{ Nom= BLMLevelSetLayer1Ground }	{ Data= ValeurItem 1 0.0 }}
+		{ Champ= { Type= P1_Scalaire_Par }	{ Nom= BLMAppartient1Ground }		{ Data= ValeurItem 1 0.0 }}
+		{ ItemSolveur=
+			{ Type= ISGeometre }
+			{ NbChampSolution= 2 }
+			{ ChampSolution= BLMAppartient1Ground BLMLevelSetLayer1Ground }
+			{ NbChampParametre= 2 }
+			{ ChampParametre= Coordonnees BLMPrecisionFrontieres }
+			{ Geometre= BLMSurfaceGround }
+			{ Distance= 1 }
+			{ Appartient= 1 }
+		}
+	}
+	{ Dependance=
+		{ Maillage= MaillagePrincipal }
+		{ Champ= Coordonnees }
+		{ Champ= BLMPrecisionFrontieres }
+	}
+	{ DependanceModifiable=  
+		{ Champ= BLMAppartient1Ground }  
+		{ Champ= BLMLevelSetLayer1Ground }  
+    }
+}
+
+
+///////////////////////////////////////////////////////
+/////// AUXILLARY MODELS //////////////////////////////
+///////////////////////////////////////////////////////
+
+{ BLMUpdateGradientMeshGround=
+    { Type= ModeleArithmetique }
+    { Dependance= 
+        { Maillage= MaillagePrincipal }
+        { Champ= BLMEpsilonMeshGround }
+    }
+    { DependanceModifiable= 
+        { Champ= BLMGradientLevelSetP1Ground }  
+    }
+    { Operation= BLMGradientLevelSetP1Ground += BLMEpsilonMeshGround } 
+}
+
+{ BLMSortieMetrique=
+    { Type= ModeleSortie }
+    { Data= 
+        { NomFichier= OutputMesh/Mesh }
+        { NomFrequence= BLMFrequency }
+        { NomCompteur= BLMCompteurTemps }
+        { TypeFichier= SortieMtc }
+		{ Format= fixed }
+		{ Precision= 15 }
+    }
+    { Dependance= 
+        { Maillage= MaillagePrincipal }
+        { Champ= BLMCompteurTemps }
+        { Champ= BLMFrequency }
+    }
+    { DependanceAEcrire= 
+       	{ Maillage= MaillagePrincipal }	 	 
+        { Champ= BLMTailleDeMaille1Ground } 
+   	}
+}

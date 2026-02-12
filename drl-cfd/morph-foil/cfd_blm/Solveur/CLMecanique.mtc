@@ -1,0 +1,81 @@
+{ CLMecanique=
+    { Type= ModeleCLSurGeometres }
+    { Data=
+        { Entite= NOEUDS }
+        
+        { ConditionLimite=
+            { Nom= In }
+            { Type= CLDirichlet }
+            { Appartient= AppartientWallIn }
+            { NbChamps= 3 }
+		    { Degres= Un Un Zero }
+		    { Valeurs= VxInP1 Zero Zero } 
+            { Priorite= 5 }    
+        } 
+		
+		{ ConditionLimite=
+            { Nom= Top }
+            { Type= CLDirichlet }
+            { Appartient= AppartientWallTop }
+            { NbChamps= 3 }
+		    { Degres= Zero Un Zero }
+		    { Valeurs= Zero Zero Zero } 
+            { Priorite= 2 }
+        } 
+
+        { ConditionLimite=
+            { Nom= Bottom }
+            { Type= CLDirichlet }
+            { Appartient= AppartientWallBottom }
+            { NbChamps= 3 }
+		    { Degres= Zero Un Zero }
+		    { Valeurs= Zero Zero Zero } 
+            { Priorite= 4 }
+        } 
+		 
+        { ConditionLimite=
+            { Nom= Out }
+            { Type= CLDirichlet }
+            { Appartient= AppartientWallOut }
+            { NbChamps= 3 }
+		    { Degres= Zero Zero Zero }
+		    { Valeurs= Zero Zero Zero } 
+            { Priorite= 1 }
+        }  
+		 
+        { ConditionLimite=
+            { Nom= Object }
+            { Type= CLDirichlet }
+            { Appartient= AppartientObject }
+            { NbChamps= 3 }
+		    { Degres= Un Un Zero }
+		    { Valeurs= Zero Zero Zero } 
+            { Priorite= 3 }
+        }
+
+        { ConditionLimite=
+            { Nom= Reste }
+            { Type= CLDirichlet }
+            { Appartient= BordNoeud }
+            { NbChamps= 3 }
+            { Degres= Un Un Zero }
+            { Valeurs= Zero Zero Zero }
+            { Priorite= 0 }
+        } 
+    }  
+    { Precision= PrecisionFrontieres }
+    { Dependance=
+        { Maillage= MaillagePrincipal }
+        { Champ= AppartientWallIn }
+        { Champ= AppartientWallBottom }
+        { Champ= AppartientWallOut }
+        { Champ= AppartientWallTop }
+        { Champ= AppartientObject }
+        { Champ= PrecisionFrontieres }
+        { Champ= Un }
+        { Champ= Zero }			
+        { Champ= VxInP1 }			
+        { Champ= BordNoeud }
+    }
+}
+

@@ -1,0 +1,9 @@
+{ DragLiftObjects= 
+	{ Type= ModeleDeModeles }
+	{ Dependance=  
+    	{ Maillage= MaillagePrincipal }
+		{ Modele= DragLiftObject0 }	
+	}
+}
+
+{ Fichier: DragLift/DragLiftObject0.mtc }

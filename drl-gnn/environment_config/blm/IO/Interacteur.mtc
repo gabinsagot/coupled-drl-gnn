@@ -1,0 +1,23 @@
+{ Interacteur=
+	{ Type= ModeleInteracteur }
+	{ IHM= IHM.mtc }
+	{ Data=
+		{ Champ=
+			{ Type= P0C_Scalaire_Par }
+			{ Nom= Prompt }
+			{ Data= 1 1 1 }
+		}
+		{ Champ=
+			{ Type= P0C_Scalaire_Par }
+			{ Nom= Prompteur }
+			{ Data= 1 1 0 }
+		}
+	}
+	{ DependanceModifiable= 
+		{ Champ= Prompt }
+		{ Champ= Prompteur }
+	}
+ 	{ Dependance= 
+		{ Maillage= MaillagePrincipal }
+	}
+}

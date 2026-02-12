@@ -1,0 +1,81 @@
+
+{ Increments=     
+
+    { Type= ModeleIncremental }     
+    { Data=         
+        { NomCompteur= CompteurTemps }   
+    }     
+    { Dependance=        
+        { Maillage= MaillagePrincipal }       
+        { ModeleAvantDebut=  Initialisateur }   
+        { ModeleIncrement= CorpsInc }         
+        { ModeleTerminaison= Fin }     
+    } 
+} 
+
+
+{ Initialisateur=                                  
+    { Type= ModeleDeModeles }
+    { Dependance=      
+        { Maillage= MaillagePrincipal }  
+        { Modele= Interacteur }  
+        Modele= BLM  // mesh adaptation
+        { Modele= Interacteur }
+        { Modele= Geometres }
+        { Modele= CalcIn }
+        { Modele= CalcReynolds }
+        { Modele= IniV }
+        { Modele= Reprendre }
+        { Modele= UpdateV }
+        { Modele= Sorties }
+    } 
+}
+
+
+{ CorpsInc=                                  
+    { Type= ModeleDeModeles }     
+    { Dependance=  
+        { Maillage= MaillagePrincipal } 
+        { Modele= Interacteur }
+        { Modele= CLMecanique }
+        { Modele= NavierStokes }
+        { Modele= DragLift }
+        { Modele= DragLiftObjects }
+        // { Modele= Sensors } // sensor data
+        { Modele= UpdateV }
+        { Modele= Sorties }
+        { Modele= GestionTemps }
+    } 
+} 
+{ GestionTemps=                              // T=T+dt jusqu'au T=Tfin
+
+    { Type= ModeleTemporel }     
+
+    { Data=         
+        { NomTemps= Temps }         
+        { NomPasDeTemps= PasDeTemps }  
+    } 
+    { DependanceModifiable= 
+        { Champ= Temps } 
+    } 
+    { Dependance=         
+        { Maillage= MaillagePrincipal }               
+        { Champ= PasDeTemps }  
+    } 
+} 
+
+
+{ Fin=                                      // on sort si T = Tfin
+    { Type= ModeleFinSurTemps }     
+    { Data=         
+        { NomTemps= Temps }         
+        { NomTempsFin= TempsFin }     
+    }     
+    { Dependance=         
+        { Maillage= MaillagePrincipal }         
+        { Champ= Temps }         
+        { Champ= TempsFin }     
+    } 
+} 
+
+

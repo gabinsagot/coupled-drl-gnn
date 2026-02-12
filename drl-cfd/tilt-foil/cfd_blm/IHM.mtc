@@ -1,0 +1,36 @@
+// ### IO parameters /////////////////////////////////////////////////////
+{ Target= Prompt 0 }
+{ Target= Prompteur 120000 }
+{ Target= FrequenceStockage_vtk 4 }
+
+// ### NS parameters /////////////////////////////////////////////////////
+{ Target= PasDeTemps 0.05 }
+{ Target= TempsFin 30.0 }
+{ Target= Eta1 0.001 }
+{ Target= Rho1 1 }
+{ Target= VxIn 1 }
+
+// ### BLM parameters ////////////////////////////////////////////////////
+{ Target= BLMPrompt 0 }
+{ Target= BLMPrompteur 120000 }
+{ Target= BLMMaxIteration 20 } // meshing iterations
+{ Target= BLMFrequency 1 } // mesh output freq
+{ Target= BLMHbox1 0.0003 }
+{ Target= BLMHbox2 0.12 }
+{ Target= BLMHbox3 0.2 }
+{ Target= BLMGrowth 1.2 } // growth factor
+{ Target= BLMLayers 20 } // boundary layers
+{ Target= BLMBox 0 }
+{ Target= BLMInverseLevelSet 0 }
+{ Target= BLMRatio 50 }
+{ Target= BLMAnisotropic 1 }
+{ Target= BLMHbox4 0 }
+
+// ### Ground BLM parameters ////////////////////////////////////////////
+// { Target= BLMHbox1Ground 0.01 }
+// { Target= BLMHbox2Ground 1.0 }
+// { Target= BLMHbox3Ground 5.0 }
+// { Target= BLMLayersGround 10 }
+// { Target= BLMGrowthGround 1.5 }
+// { Target= BLMRatioGround 50 }
+

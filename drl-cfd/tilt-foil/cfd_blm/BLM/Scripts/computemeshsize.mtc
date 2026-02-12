@@ -1,0 +1,433 @@
+
+{ BLMMeshPreparation= 
+	{ Type= ModeleDeModeles }
+   	{ Data=
+		{ Champ= { Type= P0C_Scalaire_Par } { Nom= BLMHbox1 } 				{ Data= ValeurItem 1 0.0001 } }
+		{ Champ= { Type= P0C_Scalaire_Par } { Nom= BLMHbox2 } 				{ Data= ValeurItem 1 0.1 } }
+		{ Champ= { Type= P0C_Scalaire_Par } { Nom= BLMHbox3 } 				{ Data= ValeurItem 1 0.5 } }
+		{ Champ= { Type= P0C_Scalaire_Par } { Nom= BLMHbox4 } 				{ Data= ValeurItem 1 0.5 } }
+		{ Champ= { Type= P0C_Scalaire_Par } { Nom= BLMBox } 				{ Data= ValeurItem 1 0 } }
+		{ Champ= { Type= P1_Scalaire_Par } 	{ Nom= BLMMeshsizeT } 			{ Data= ValeurItem 1 0 } }
+		{ Champ= { Type= P1_Scalaire_Par } 	{ Nom= BLMMeshsize } 			{ Data= ValeurItem 1 0 } }
+		{ Champ= { Type= P1_Scalaire_Par } 	{ Nom= BLMMeshsizebis } 		{ Data= ValeurItem 1 0 } }
+		{ Champ= { Type= P1_Scalaire_Par } 	{ Nom= BLMMeshsize1 } 			{ Data= ValeurItem 1 0 } }
+		{ Champ= { Type= P1_Scalaire_Par } 	{ Nom= BLMMeshsize11 }			{ Data= ValeurItem 1 0 } }
+		{ Champ= { Type= P1_Scalaire_Par } 	{ Nom= BLMMeshsize2 } 			{ Data= ValeurItem 1 0 } }
+		{ Champ= { Type= P1_Scalaire_Par } 	{ Nom= BLMMeshsize3 } 			{ Data= ValeurItem 1 0 } }
+		{ Champ= { Type= P1_Scalaire_Par } 	{ Nom= BLMIndicator } 			{ Data= ValeurItem 1 0 } }
+		{ Champ= { Type= P1_Scalaire_Par } 	{ Nom= BLMLevelSetLayer1bis } 	{ Data= ValeurItem 1 0 } }
+		{ Champ= { Type= P1_Scalaire_Par } 	{ Nom= BLMLevelSetLayer2bis } 	{ Data= ValeurItem 1 0 } }
+		{ Champ= { Type= P1_Scalaire_Par } 	{ Nom= BLMLevelSetLayer3bis } 	{ Data= ValeurItem 1 0 } }
+		{ Champ= { Type= P0C_Scalaire_Par } { Nom= BLMFacteur0 } 			{ Data= ValeurItem 1 1 } }
+		{ Champ= { Type= P0C_Scalaire_Par } { Nom= BLMFacteur } 			{ Data= ValeurItem 1 0.7 } }
+		{ Champ= { Type= P0C_Scalaire_Par } { Nom= BLMGrowth } 				{ Data= ValeurItem 1 1.2 } }
+		{ Champ= { Type= P0C_Scalaire_Par } { Nom= BLMLayers } 				{ Data= ValeurItem 1 10 } }
+		{ Champ= { Type= P1_Scalaire_Par } 	{ Nom= BLMHbox1MAx } 			{ Data= ValeurItem 1 0 } }
+		{ Champ= { Type= P1_Scalaire_Par } 	{ Nom= BLMHighlight } 			{ Data= ValeurItem 1 0 } }
+		{ Champ= { Type= P0C_Scalaire_Par } { Nom= BLMFactorD } 			{ Data= ValeurItem 1 1 } }
+		{ Champ= { Type= P0C_Scalaire_Par } { Nom= BLMRatio } 				{ Data= ValeurItem 1 1 } }
+		{ Champ= { Type= P0C_Scalaire_Par } { Nom= BLMAnisotropic } 		{ Data= ValeurItem 1 1 } }
+		{ Champ= { Type= P0C_Scalaire_Par } { Nom= BLMInverseLevelSet } 	{ Data= ValeurItem 1 0 } }
+		{ Champ= { Type= P1_Tenseur_Par } 	{ Nom= BLMTailleDeMaille1 } 	{ Data= ValeurItem 4 1 0 0 1 } }
+		{ Champ= { Type= P0_Vecteur_Par } 	{ Nom= BLMGradientLevelSet } 	{ Data= ValeurItem 2 0 0 } }
+		{ Champ= { Type= P1_Vecteur_Par }	{ Nom= BLMGradientLevelSetP1 } 	{ Data= ValeurItem 2 0 0 } }
+	}
+	{ Dependance=  
+        { Maillage= MaillagePrincipal } 		 
+		{ Modele= BLMInverseLevelSet }
+		// { Modele= BLMUpdate2 }
+		{ Modele= BLMComputeMeshsize1 }	  
+        { Modele= BLMUpdateLevelSetMeshSize } 	
+        { Modele= BLMMaxMeshsize2 } 	
+        { Modele= BLMMaxMeshsize3 } 
+		{ Modele= BLMCalculGradientLevelSet }
+		{ Modele= BLMCalculGradientLevelSetP1 }
+		{ Modele= BLMUpdateGradientMesh }
+		{ Modele= BLMComputeMeshsize2 }
+        // { Modele= BLMTestingMeshSize }
+        // { Modele= BLMMakeSum0 } 	
+        // { Modele= BLMMakeSum } 	
+		// { Modele= BLMMakeSum1 } 
+	}
+}
+
+{ BLMUpdate2=
+    { Type= ModeleArithmetique }
+    { Dependance= 
+        { Maillage= MaillagePrincipal }
+     
+     
+		{ Champ= BLMLevelSetLayer1 } 
+		{ Champ= BLMZero } 
+		{ Champ= BLMFty } 
+    }
+    { DependanceModifiable= 
+        
+      { Champ= BLMLevelSetLayer2 }  
+      { Champ= BLMAppartient2 }  
+    }	
+	{ Operation= BLMLevelSetLayer2 = BLMLevelSetLayer1 }	
+	{ Operation= BLMLevelSetLayer2 += BLMFty }	
+	{ Operation= BLMAppartient2 = BLMLevelSetLayer2 }	
+	{ Operation= BLMAppartient2 >=? BLMZero }	
+}
+// *****************************************************
+// *****************************************************
+{ BLMInverseLevelSet=
+   { Type= ModeleConditionnel }
+   { Dependance=
+      { Maillage= MaillagePrincipal }
+      { ChampCondition= BLMInverseLevelSet }
+      { ModeleTrue= BLMProblemLevelset }
+      { ModeleFalse= BLMLevelsetOK }
+   }
+}
+{ BLMProblemLevelset=
+    { Type= ModeleArithmetique }
+    { Dependance= 
+        { Maillage= MaillagePrincipal }
+     
+        { Champ= BLMMOne }
+        { Champ= BLMOne }
+    }
+    { DependanceModifiable= 
+        { Champ= BLMLevelSetLayer1 } 
+        { Champ= BLMHighlight } 
+        { Champ= BLMAppartient1 } 
+    }
+	{ Operation= BLMLevelSetLayer1 *= BLMMOne }
+	{ Operation= BLMHighlight = BLMOne }
+	{ Operation= BLMHighlight -= BLMAppartient1 }
+	{ Operation= BLMAppartient1 = BLMHighlight }
+	{ Operation= BLMHighlight = BLMLevelSetLayer1 }	
+}
+{ BLMLevelsetOK=
+    { Type= ModeleArithmetique }
+    { Dependance= 
+        { Maillage= MaillagePrincipal }
+     
+        { Champ= BLMMOne }
+        { Champ= BLMOne }
+		{ Champ= BLMLevelSetLayer1 } 
+    }
+    { DependanceModifiable= 
+        
+      { Champ= BLMHighlight }  
+    }	
+	{ Operation= BLMHighlight = BLMLevelSetLayer1 }	
+}
+// *****************************************************
+// *****************************************************
+
+{ BLMComputeMeshsize1=
+   { Type= ModeleParticulaire }
+   { Data=
+     { ItemSolveur=
+         { Type= ISCoucheLimitef1 }
+         { NbChampSolution= 3 }
+         { ChampSolution= BLMTailleDeMaille1 BLMLevelSetLayer1 BLMMeshsize11 }
+         { NbChampParametre= 15 }
+         { ChampParametre= BLMHbox1 BLMLayers BLMGrowth BLMLevelSetLayer1 BLMGradientLevelSetP1 BLMMaxMesh2 BLMHbox2 BLMLevelSetLayer2 BLMMaxMesh3 BLMHbox3 BLMRatio BLMCompteurTemps BLMAnisotropic BLMDistanceChargement BLMHbox4 } 
+		 
+      }
+   }
+   { Dependance=
+      { Maillage= MaillagePrincipal }
+		{ Champ= BLMHbox1 }
+	
+		{ Champ= BLMLayers }
+		{ Champ= BLMGrowth }
+		{ Champ= BLMLevelSetLayer1 }
+		{ Champ= BLMLevelSetLayer2 }
+		{ Champ= BLMGradientLevelSetP1 }
+		{ Champ= BLMDistanceChargement }
+		{ Champ= BLMMaxMesh2 }
+		{ Champ= BLMMaxMesh3 }
+		{ Champ= BLMHbox2 }
+		{ Champ= BLMHbox3 }
+		{ Champ= BLMHbox4 }
+		{ Champ= BLMBox }
+		{ Champ= BLMRatio }
+		{ Champ= BLMCompteurTemps }
+		{ Champ= BLMAnisotropic }
+		
+   }
+     { DependanceModifiable=  
+
+        { Champ= BLMTailleDeMaille1 }  
+        { Champ= BLMMeshsize11 }  
+        { Champ= BLMLevelSetLayer1 }  
+    }
+}
+
+// *****************************************************
+// *****************************************************
+// *****************************************************
+// *****************************************************
+// *****************************************************
+// *****************************************************
+{ BLMUpdateLevelSetMeshSize=
+    { Type= ModeleArithmetique }
+    { Dependance= 
+        { Maillage= MaillagePrincipal }
+        { Champ= BLMMOne }
+        { Champ= BLMLevelSetLayer1 }
+        { Champ= BLMLevelSetLayer2 }
+        { Champ= BLMAppartient2 } 
+        { Champ= BLMHbox1MAx } 
+        { Champ= BLMFactorD }  
+    }
+    { DependanceModifiable= 
+
+        { Champ= BLMLevelSetLayer2bis }  
+ 
+        { Champ= BLMIndicator }  
+    }
+    { Operation= BLMLevelSetLayer2bis = BLMLevelSetLayer2 }
+	{ Operation= BLMLevelSetLayer2bis *= BLMMOne }
+	{ Operation= BLMLevelSetLayer2bis *= BLMFactorD }
+     { Operation= BLMIndicator = BLMLevelSetLayer1 }
+     { Operation= BLMIndicator *= BLMMOne }
+     { Operation= BLMIndicator *= BLMFactorD }
+     { Operation= BLMIndicator *= BLMAppartient2 }
+
+}
+
+{ BLMMaxMeshsize2=
+   { Type= ModeleParticulaire }
+   { Data=
+		{ Champ= 
+			{ Type= P0C_Scalaire_Par }
+			{ Nom= BLMMaxMesh2 }
+			{ Data= ValeurItem 1 0 }
+		}
+      { ItemSolveur=
+         { Type= ISMax }
+         { NbChampSolution= 1 }
+         { ChampSolution= BLMMaxMesh2 }
+         { NbChampParametre= 1 }
+         { ChampParametre= BLMIndicator }
+      }
+   }
+   { Dependance=
+      { Maillage= MaillagePrincipal }
+      { Champ= BLMMeshsize2 }
+      { Champ= BLMIndicator }
+   }
+}
+{ BLMMaxMeshsize3=
+   { Type= ModeleParticulaire }
+   { Data=
+		{ Champ= 
+			{ Type= P0C_Scalaire_Par }
+			{ Nom= BLMMaxMesh3 }
+			{ Data= ValeurItem 1 0 }
+		}
+      { ItemSolveur=
+         { Type= ISMax }
+         { NbChampSolution= 1 }
+         { ChampSolution= BLMMaxMesh3 }
+         { NbChampParametre= 1 }
+         { ChampParametre= BLMLevelSetLayer2bis }
+      }
+   }
+   { Dependance=
+      { Maillage= MaillagePrincipal }
+      { Champ= BLMLevelSetLayer2bis }
+   }
+}
+// *****************************************************
+// *****************************************************
+// *****************************************************
+// *****************************************************
+// *****************************************************
+// *****************************************************
+
+
+{ BLMComputeMeshsize2=
+   { Type= ModeleParticulaire }
+   { Data=
+     { ItemSolveur=
+         { Type= ISCoucheLimitef1 }
+         { NbChampSolution= 3 }
+         { ChampSolution= BLMTailleDeMaille1 BLMMeshsize3 BLMMeshsize2 }
+         { NbChampParametre= 15 }
+         { ChampParametre= BLMHbox1 BLMLayers BLMGrowth BLMHighlight BLMGradientLevelSetP1 BLMMaxMesh2 BLMHbox2 BLMLevelSetLayer2 BLMMaxMesh3 BLMHbox3 BLMRatio BLMCompteurTemps BLMAnisotropic BLMDistanceChargement BLMHbox4 } // BOX 
+      }
+   }
+   { Dependance=
+      { Maillage= MaillagePrincipal }
+		{ Champ= BLMHbox1 }
+
+		{ Champ= BLMLayers }
+		{ Champ= BLMGrowth }
+		{ Champ= BLMLevelSetLayer1 }
+		{ Champ= BLMLevelSetLayer2 }
+		{ Champ= BLMDistanceChargement }
+		{ Champ= BLMHighlight }
+		{ Champ= BLMGradientLevelSetP1 }
+		{ Champ= BLMMaxMesh2 }
+		{ Champ= BLMMaxMesh3 }
+		{ Champ= BLMHbox2 }
+		{ Champ= BLMHbox3 }
+		{ Champ= BLMHbox4 }
+		{ Champ= BLMBox }
+		{ Champ= BLMRatio }
+		{ Champ= BLMCompteurTemps }
+		{ Champ= BLMAnisotropic }
+		
+   }
+     { DependanceModifiable=  
+
+        { Champ= BLMTailleDeMaille1 }  
+        { Champ= BLMMeshsize11 }  
+        { Champ= BLMMeshsize2 }  
+        { Champ= BLMLevelSetLayer1 }  
+    }
+}
+
+
+
+// *****************************************************
+// *****************************************************
+// *****************************************************
+// *****************************************************
+// *****************************************************
+// *****************************************************
+
+
+
+{ BLMMakeSum0=
+	{ Type= ModeleFonctionnel }
+	{ Data=
+		{ Champ= 
+			{ Type= P0_Scalaire_Par }
+			{ Nom= BLMAppartient1P0 }
+			{ Data= ValeurItem 1 0 }
+	   	}
+		{ SimplexSolveurFonctionnel=
+			{ Type= SsfP1P0 }
+			{ NbChampSolution= 1 }
+			{ ChampSolution= BLMAppartient1P0 }
+			{ NbChampParametre= 1 }
+			{ ChampParametre= BLMAppartient1  }
+		}
+	}
+	{ Dependance=
+		{ Maillage= MaillagePrincipal }
+		{ Champ= BLMAppartient1 }
+		
+	}
+}
+
+
+{ BLMMakeSum=
+	{ Type= ModeleParticulaire }
+	{ Data=
+        { Champ= 
+			{ Type= P0C_Scalaire_Par }
+			{ Nom= BLMCountP0 }
+			{ Data= ValeurItem 1 0 }
+	   	}
+		{ ItemSolveur=
+			{ Type= ISSomme }
+			{ NbChampSolution= 1 }
+			{ ChampSolution= BLMCountP0 }
+			{ NbChampParametre= 1 }
+			{ ChampParametre= BLMAppartient1 }
+		      { Operations=
+            		{ NbChampsATraiter= 1 }
+            		{ Numero= 0 }
+            		{ Initialise= BLMZero }
+            		{ Moyenner= 0 }
+         		}
+		}
+	}
+    { Dependance=
+        { Maillage= MaillagePrincipal }
+        { Champ= BLMAppartient1 }
+        { Champ= BLMZero }
+    }
+} 
+
+
+{ BLMMakeSum1=
+		{ Type= ModeleCapteur }
+			{ Data= 
+			    { NomFichier= NbrOfInternalNodes }
+				{ NbCapteurs= 1 }		
+				{ HAdaptation= 1 }		
+				{ Dimension= 2 }
+				{ Coordonnees= 
+				{ Point1= 0 0 }			
+			}
+		}
+		
+		{ Dependance= 
+		    { Maillage= MaillagePrincipal }
+	        { Champ= BLMCountP0 }
+		}
+}
+
+
+{ BLMCalculGradientLevelSet=
+    { Type= ModeleFonctionnel }
+    { Data=
+        { SimplexSolveurFonctionnel=
+            { Type= SsfGradient }
+            { NbChampSolution= 1 }
+            { ChampSolution= BLMGradientLevelSet }
+            { NbChampParametre= 1 }
+            { ChampParametre= BLMHighlight } LevelSetLingot4
+        }
+    }
+    { Dependance=
+        { Maillage= MaillagePrincipal }
+        { Champ= BLMHighlight }
+    }
+	{ DependanceModifiable=  
+ 
+        { Champ= BLMGradientLevelSetP1 }  
+    }
+	
+}
+
+{ BLMCalculGradientLevelSetP1=
+    { Type= ModeleFonctionnel }
+    { Data=
+        { SimplexSolveurFonctionnel=
+            { Type= SsfTest }
+            { NbChampSolution= 1 }
+            { ChampSolution= BLMGradientLevelSetP1 }
+            { OperationsP1=
+                { NbChampsP1= 1 }
+                { Numero= 0 }
+                { Initialise= 0.0 }
+                { Moyenner= 1 }
+                { Operateur= += } 
+            }
+            { NbChampParametre= 1 }
+            { ChampParametre= BLMGradientLevelSet  }
+        }
+    }
+    { Dependance=
+        { Maillage= MaillagePrincipal }
+        { Champ= BLMGradientLevelSet }
+    }
+	{ DependanceModifiable=  
+ 
+        { Champ= BLMGradientLevelSetP1 }  
+    }
+}
+
+{ BLMUpdateGradientMesh=
+    { Type= ModeleArithmetique }
+    { Dependance= 
+        { Maillage= MaillagePrincipal }
+        { Champ= BLMEpsilonMesh }
+    }
+    { DependanceModifiable= 
+        { Champ= BLMGradientLevelSetP1 }  
+    }
+    { Operation= BLMGradientLevelSetP1 += BLMEpsilonMesh } 
+}

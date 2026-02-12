@@ -1,0 +1,53 @@
+{ NavierStokes=
+	{ Type= ModeleElementsFinis }
+	{ Data=
+		{ Champ= { Type= P1_Vecteur_Par }	{ Nom= Vitesse }		{ Data= ValeurItem 2 0 0 }}
+		{ Champ= { Type= P1_Vecteur_Par }	{ Nom= VitesseMoins }	{ Data= ValeurItem 2 0 0 }}
+		{ Champ= { Type= P1_Scalaire_Par }	{ Nom= Pression }		{ Data= ValeurItem 1 0.0 }}
+		{ Champ= { Type= P1_Vecteur_Par }	{ Nom= ZeroVecteur }	{ Data= ValeurItem 2 0.0 0.0 }}
+		{ Champ= { Type= P1_Vecteur_Par }	{ Nom= VectorD }		{ Data= ValeurItem 2 1 0 }}
+		{ Champ= { Type= P1_Vecteur_Par }	{ Nom= VectorL }		{ Data= ValeurItem 2 0 1 }}
+		{ Champ= { Type= P1_Vecteur_Par }	{ Nom= Vz }				{ Data: Dimension/vecteur.txt }}
+		{ SolveurLocal=
+			{ Type= NavierStokesVMS }
+			{ Resolution= 4  }  
+			{ Preconditionneur= 24 } 
+			{ NbChampParametre= 8 }
+			{ ChampParametre= Eta1 Gravite Vitesse VitesseMoins Rho1 PasDeTemps ZeroVecteur Zero }
+			{ NbChampSolution= 2 }
+			{ ChampSolution= Vitesse Pression }
+			{ Newton= 0.5 }
+		}
+		{ Solveur= 
+			{ Type= SolveurLineaire }
+			{ TypeDeNorme= 1 }
+			{ Precision= 1e-5 }
+			{ IterMax= 0 }
+		}
+	}
+	{ Dependance=
+		{ Champ= Gravite }
+		{ Champ= ZeroVecteur }
+		{ Champ= Vitesse }
+		{ Champ= VitesseMoins }
+		{ Champ= PasDeTemps }
+		{ Champ= Eta1 }
+		{ Champ= Rho1 }
+		{ Champ= Zero }
+		{ Maillage= MaillagePrincipal }
+		{ ModeleCL= CLMecanique } 
+	}
+}
+
+{ UpdateV=
+    { Type= ModeleArithmetique }
+    { Dependance= 
+        { Maillage= MaillagePrincipal }
+        { Champ= Vitesse }
+    }
+    { DependanceModifiable= 
+        { Champ= VitesseMoins }
+    }
+    { Operation= VitesseMoins = Vitesse }
+}
+ 

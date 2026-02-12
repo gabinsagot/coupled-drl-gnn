@@ -1,0 +1,83 @@
+{ GeometresObjects=
+    { Type= ModeleDeModeles }
+	{ Dependance= 
+		{ Maillage= MaillagePrincipal }
+		{ Modele= DefinitionObject0 }
+		{ Modele= GeoObject0 }
+		{ Modele= DistanceObject0 }
+    }
+}
+
+{ DefinitionObject0=
+    { Type= ModeleDeMouvements }
+    { Data=
+        { Repere=
+            { Dimension= 2 } 
+            { Nom= Object0 }
+            { Origine= 0 0 } 
+            { Axes = 1 0 0 1 } 
+        }
+    }
+    { Dependance= 
+        { Maillage= MaillagePrincipal }
+    }
+}
+
+{ GeoObject0=
+    { Type= ModeleDeGeometres }
+    { Data=
+		{ Geometre= 
+			{ Nom= Object0 }
+			{ Type= GeometreAnalytique }
+			{ Data=
+				{ Forme=
+                    { Type= FormeNewMaillageBis }
+                    { Data=
+                        { M: meshes/object.t }
+                        { Localisation=
+                            { Brique= Boite }
+                            { Methode= Logarithmique }
+                            { TailleMax= 1024 }
+                        }
+                    }
+                }
+				{ Repere= Object0 }
+			}
+		}
+    }
+    { Dependance=
+        { Maillage= MaillagePrincipal }
+        { Modele= DefinitionObject0 }
+    }
+}
+
+{ DistanceObject0=
+	{ Type= ModeleParticulaire }
+	{ Data=
+		{ Champ= 
+			{ Type= P1_Scalaire_Par }
+			{ Nom= LevelSetObject0 }
+			{ Data= ValeurItem 1 0.0 }                        // ##
+		}
+		{ Champ= 
+			{ Type= P1_Scalaire_Par }
+			{ Nom= AppartientObject0 }
+			{ Data= ValeurItem 1 0.0 }                        // ##
+		}
+		{ ItemSolveur=
+			{ Type= ISGeometre }
+			{ NbChampSolution= 2 }
+			{ ChampSolution= AppartientObject0 LevelSetObject0 }
+			{ NbChampParametre= 2 }
+			{ ChampParametre= Coordonnees PrecisionFrontieres }
+			{ Geometre= Object0 }
+			{ Distance= 1 }
+			{ Appartient= 1 }
+		}
+	}
+	{ Dependance=
+		{ Maillage= MaillagePrincipal }
+		{ Champ= Coordonnees }
+		{ Champ= PrecisionFrontieres }
+	}
+}

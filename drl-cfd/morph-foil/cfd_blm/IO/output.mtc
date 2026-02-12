@@ -1,0 +1,82 @@
+{ Sorties=
+    { Type= ModeleSortie }
+    { Data= 
+		{ Champ= 
+				{ Type= P0C_Scalaire_Par }
+				{ Nom= FrequenceStockage_vtk }
+				{ Data= ValeurItem 1 5 }                        
+		}
+        { NomFichier: Dimension/resultats.txt } 
+        { NomFrequence= FrequenceStockage_vtk }
+        { NomCompteur= CompteurTemps }
+        { TypeFichier= SortieVtu }
+    }
+    { Dependance= 
+        { Maillage= MaillagePrincipal }
+        { Champ= CompteurTemps }
+    }
+
+    { DependanceAEcrire= 
+        { Maillage= MaillagePrincipal }	 	 
+        { Champ= Temps } 
+        { Champ= CompteurTemps } 
+        { Champ= Vitesse }
+        { Champ= Pression }
+	    { Champ= AppartientObject }  
+	    { Champ= AppartientWallIn }  
+	    { Champ= AppartientWallOut }  
+	    { Champ= AppartientWallTop }  
+	    { Champ= AppartientWallBottom }  
+
+        { Champ= LevelSetObject }
+        { Champ= NodeType }
+        { Champ= Reynolds }
+    }
+
+}
+
+{ SortiesMTC=
+    { Type= ModeleSortie }
+    { Data= 
+	{ Champ= 
+            { Type= P0C_Scalaire_Par }
+            { Nom= FrequenceStockage_mtc }
+            { Data= ValeurItem 1 1 }                        
+      }
+        { NomFichier: Dimension/resultats.txt } 
+        { NomFrequence= FrequenceStockage_mtc }
+        { NomCompteur= CompteurTemps }
+        { TypeFichier= SortieMtc }
+    }
+    { Dependance= 
+        { Maillage= MaillagePrincipal }
+        { Champ= CompteurTemps }
+    }
+
+    { DependanceAEcrire= 
+       { Maillage= MaillagePrincipal }	 	 
+   }
+
+}
+
+
+{ Reprendre=
+	{ Type= ModeleReprise }
+    { Data=
+        { NomFichier= input } 
+        { TypeFichier= EntreeVtu }
+        { Actif= 0 }
+        { AutoRestart= 0  }
+    }
+    { Dependance= 
+        { Maillage= MaillagePrincipal }
+    }
+    { DependanceALire= 
+        { Maillage= MaillagePrincipal }	 	 
+        { Champ= Temps } 
+        { Champ= CompteurTemps } 
+        { Champ= Vitesse }
+        { Champ= Pression }
+        { Champ= NodeType }
+    }
+}

@@ -1,0 +1,28 @@
+{ Sensors=
+	{ Type= ModeleCapteur }
+	{ Data= 
+		{ NomFichier= Resultats/Sensors/Capteur } // name of outfile (1 file per point)
+		{ NbCapteurs= 10 }
+		{ Dimension= 2 }
+		{ HAdaptation= 1 } // 1 if points not necessarily same as mesh nodes
+		{ Coordonnees=
+			{ Point1= -1.165109 -5.21235 } // x y coords
+			{ Point2= -0.690124 -5.21235 }
+			{ Point3= -0.120141 -5.21235 }
+			{ Point4= 0.663585 -5.21235 }
+			{ Point5= 1.067323 -5.21235 }
+			{ Point6= -1.165109 -3.52755 }
+			{ Point7= -0.690124 -3.52755 }
+			{ Point8= -0.120141 -3.52755 }
+			{ Point9= 0.663585 -3.52755 }
+			{ Point10= 1.067323 -3.52755 }
+		}
+	}
+	{ Dependance= // Add Champ= XXX to print XXX values at the points
+		{ Maillage= MaillagePrincipal } // always include
+		{ Champ= CompteurTemps }
+		{ Champ= Temps }
+		{ Champ= Pression }
+		{ Champ= Vitesse }
+	}
+}

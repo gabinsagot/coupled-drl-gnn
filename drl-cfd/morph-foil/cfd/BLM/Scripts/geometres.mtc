@@ -1,0 +1,268 @@
+
+{ BLMBoxOrSurface=
+   { Type= ModeleConditionnel }
+   { Dependance=
+      { Maillage= MaillagePrincipal }
+      { ChampCondition= BLMBox }
+      { ModeleTrue= BLMBox }
+      { ModeleFalse= BLMSurface }
+   }
+}
+
+
+{ BLMBox=
+    { Type= ModeleDeModeles }
+      { Dependance= 
+        
+      { Maillage= MaillagePrincipal }
+   
+        
+      { Modele= BLMRepere1 }
+      { Modele= BLMGeo1 }
+      { Modele= BLMDistance1 }
+	  
+	      
+      { Modele= BLMRepere2 }
+      { Modele= BLMGeo2 }
+      { Modele= BLMDistance2 }
+
+	  
+    }
+}
+
+
+{ BLMSurface=
+    { Type= ModeleDeModeles }
+	{ Dependance= 
+		{ Maillage= MaillagePrincipal }
+		{ Modele= BLMRepere2 }
+		{ Modele= BLMGeo2 }
+		{ Modele= BLMDistance2 }
+		{ Modele= BLMRepere3 } 
+		{ Modele= BLMGeo3 } 
+		{ Modele= BLMDistance3 }
+    }
+}
+
+{ BLMRepere1=
+	{ Type= ModeleDeMouvements }
+	{ Data=
+		{ Repere=
+			{ Dimension= 2 }
+			{ Nom= BLMR1 }
+			{ Origine: BLM/Center1.txt }
+			{ Axes= 1 0 0 1 }
+		}
+	}
+	{ Dependance=
+		{ Modele= BLMRepere1 }
+		
+	}
+}
+{ BLMGeo1=
+	{ Type= ModeleDeGeometres }
+	{ Data=
+		{ Geometre=
+			{ Nom= BLMImmersed }
+			{ Type= GeometreAnalytique }
+			{ Data=
+				{ Forme= 
+					{ Type= Brique }
+					{ Dimension= 2 }
+					{ Data=
+						{ Dimension: BLM/Box1.txt }
+					}
+				}
+				{ Repere= BLMR1 }
+			}
+		}
+		
+	}
+	{ Dependance=
+		{ Modele= BLMRepere1 }
+	}
+}
+
+
+{ BLMDistance1=
+	{ Type= ModeleParticulaire }
+	{ Data=
+		{ Champ= 
+			{ Type= P1_Scalaire_Par }
+			{ Nom= BLMLevelSetLayer1 }
+			{ Data= ValeurItem 1 0.0 }                        // ##
+		}
+		{ Champ= 
+			{ Type= P1_Scalaire_Par }
+			{ Nom= BLMAppartient1 }
+			{ Data= ValeurItem 1 0.0 }                        // ##
+		}
+		{ ItemSolveur=
+			{ Type= ISGeometre }
+			{ NbChampSolution= 2 }
+			{ ChampSolution= BLMAppartient1 BLMLevelSetLayer1 }
+			{ NbChampParametre= 2 }
+			{ ChampParametre= Coordonnees BLMPrecisionFrontieres }
+			{ Geometre= BLMImmersed }
+			{ Distance= 1 }
+			{ Appartient= 1 }
+		}
+	}
+	{ Dependance=
+		{ Maillage= MaillagePrincipal }
+		{ Champ= Coordonnees }
+		{ Champ= BLMPrecisionFrontieres }
+	}
+}
+
+
+{ BLMRepere2=
+	{ Type= ModeleDeMouvements }
+	{ Data=
+		{ Repere=
+			{ Dimension= 2 }
+			{ Nom= BLMR2 }
+			{ Origine: BLM/Center2.txt }
+			{ Axes= 1 0 0 1 }
+		}
+	}
+}
+{ BLMGeo2=
+	{ Type= ModeleDeGeometres }
+	{ Data=
+		{ Geometre=
+			{ Nom= BLMBox2 }
+			{ Type= GeometreAnalytique }
+			{ Data=
+				{ Forme= 
+					{ Type= Brique }
+					{ Dimension= 2 }
+					{ Data=
+						{ Dimension: BLM/Box2.txt }
+					}
+				}
+				{ Repere= BLMR2 }
+			}
+		}
+		
+	}
+	{ Dependance=
+		{ Modele= BLMRepere2 }
+	}
+}
+
+
+{ BLMDistance2=
+	{ Type= ModeleParticulaire }
+	{ Data=
+		{ Champ= 
+			{ Type= P1_Scalaire_Par }
+			{ Nom= BLMLevelSetLayer2 }
+			{ Data= ValeurItem 1 0.0 }                        // ##
+		}
+		{ Champ= 
+			{ Type= P1_Scalaire_Par }
+			{ Nom= BLMAppartient2 }
+			{ Data= ValeurItem 1 0.0 }                        // ##
+		}
+		{ ItemSolveur=
+			{ Type= ISGeometre }
+			{ NbChampSolution= 2 }
+			{ ChampSolution= BLMAppartient2 BLMLevelSetLayer2 }
+			{ NbChampParametre= 2 }
+			{ ChampParametre= Coordonnees BLMPrecisionFrontieres }
+			{ Geometre= BLMBox2 }
+			{ Distance= 1 }
+			{ Appartient= 1 }
+		}
+	}
+	{ Dependance=
+		{ Maillage= MaillagePrincipal }
+		{ Champ= Coordonnees }
+		{ Champ= BLMPrecisionFrontieres }
+	}
+}
+
+
+
+{ BLMRepere3=
+	{ Type= ModeleDeMouvements }
+	{ Data=
+		{ Repere=
+			{ Dimension= 2 }
+			{ Nom= BLMR3 }
+			{ Origine= 0 0 }
+			{ Axes= 1 0 0 1 }
+		}
+	}
+}
+
+{ BLMGeo3=
+        { Type= ModeleDeGeometres }
+        { Data=
+                { Geometre=
+                        { Nom= BLMSurface }
+                        { Type= GeometreAnalytique }
+                        { Data=
+                                { Forme=
+                                        { Type= FormeNewMaillageBis }
+                                        { Data=
+                                        { M: meshes/object.t }
+                                                { Localisation=
+                                                        { Brique= Boite }
+                                                        { Methode= Logarithmique }
+                                                        { TailleMax= 1024 }
+                                                }
+                                        }
+                                }
+                                { Repere= BLMR3 }
+                        }
+                }
+        }
+        { Dependance=
+                { Maillage= MaillagePrincipal }
+                { Modele= BLMRepere3 }
+        }
+}
+
+{ BLMDistance3=
+	{ Type= ModeleParticulaire }
+	{ Data=
+		{ Champ= 
+			{ Type= P1_Scalaire_Par }
+			{ Nom= BLMLevelSetLayer1s }
+			{ Data= ValeurItem 1 0.0 }                        // ##
+		}
+		{ Champ= 
+			{ Type= P1_Scalaire_Par }
+			{ Nom= BLMAppartient1s }
+			{ Data= ValeurItem 1 0.0 }                        // ##
+		}
+		{ ItemSolveur=
+			{ Type= ISGeometre }
+			{ NbChampSolution= 2 }
+			{ ChampSolution= BLMAppartient1 BLMLevelSetLayer1 }
+			{ NbChampParametre= 2 }
+			{ ChampParametre= Coordonnees BLMPrecisionFrontieres }
+			{ Geometre= BLMSurface }
+			{ Distance= 1 }
+			{ Appartient= 1 }
+		}
+	}
+	{ Dependance=
+		{ Maillage= MaillagePrincipal }
+		{ Champ= Coordonnees }
+		{ Champ= BLMPrecisionFrontieres }
+	}
+	   { DependanceModifiable=  
+
+        { Champ= BLMAppartient1 }  
+        { Champ= BLMLevelSetLayer1 }  
+
+    }
+}
+
+
+
+
+
