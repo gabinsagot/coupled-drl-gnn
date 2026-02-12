@@ -4,7 +4,7 @@
 
 ## Overview
 
-This repository let's you train Graph Neural Networks on meshes (e.g. fluid dynamics, material simulations, etc).
+This repository lets you train Graph Neural Networks on meshes (e.g. fluid dynamics, material simulations, etc).
 It is based on the work from different papers:
 - [Learning Mesh-Based Simulation with Graph Networks](https://arxiv.org/abs/2010.03409)
 - [Multi-Grid Graph Neural Networks with Self-Attention for Computational Mechanics](https://arxiv.org/pdf/2409.11899)
@@ -130,7 +130,7 @@ pip install  dgl -f https://data.dgl.ai/wheels/torch-2.4/cu124/repo.html
 
 ### WandB
 
-We use Weights and Bias to log most of our metrics and vizualizations during the trainig. Make sure you create and account, and log in before you start training.
+We use Weights and Bias to log most of our metrics and vizualizations during the training. Make sure you create and account, and log in before you start training.
 
 ```python
 import wandb
