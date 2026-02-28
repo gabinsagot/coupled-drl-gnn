@@ -20,6 +20,8 @@
         { Maillage= MaillagePrincipal }	 	 
         { Champ= Temps } 
         { Champ= LevelSetObject }
+        // { Champ= NewAppartientObjet }
+        { Champ= LSF }
         { Champ= NodeType }
     }
 }

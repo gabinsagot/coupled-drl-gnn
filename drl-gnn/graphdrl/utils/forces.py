@@ -50,8 +50,8 @@ def build_object_containers(
         object_containers[i] = {
             "x_min": x0 + i * spacing - (chord * 0.625),  # slight margin
             "y_min": y0 - (chord * 0.625),
-            "dx": chord * 1.25,  # slight margin
-            "dy": chord * 1.25,
+            "dx": chord * 1.5,  # slight margin
+            "dy": chord * 1.5,
         }
     return object_containers
 
@@ -217,6 +217,7 @@ def compute_drag_lift(
         phi = -mesh.point_data[feature_names.get("levelset", "LevelSetObject")].reshape(
             -1
         )
+        # TODO: if LevelSetObject not available in xdmf from GNN, apply reverse transformation to LSF to get LevelSetObject back 
         nodetype = np.asarray(
             mesh.point_data[feature_names.get("nodetype", "NodeType")].reshape(-1)
         ).astype(int)

@@ -32,9 +32,7 @@ class Reward:
             if self.stretch_factor <= 0:
                 raise ValueError("stretch_factor must be positive.")
             if self.stretch_type not in ["lin", "tanh", "pow", "log"]:
-                raise ValueError(
-                    "stretch_type must be one of ['lin', 'tanh', 'pow', 'log']."
-                )
+                raise ValueError("stretch_type must be one of ['lin', 'tanh', 'pow', 'log'].")
 
     def compute_reward(self, ep: int, **kwargs):
         raise NotImplementedError("compute_reward() must be implemented by subclasses")
@@ -640,6 +638,219 @@ class MinimizeAvgFx(Reward):
             )
         return self.contrast_stretch(reward)
 
+
+
+class MaximizeLiftToDrag(Reward):
+    def __init__(
+        self,
+        start_step: int = 150,
+        bad_reward: float = -10,
+        num_objects: int = 1,
+        object_weights: List[float] = None,
+        stretch_factor: float | None = None,
+        stretch_type: str = "lin",
+    ):
+        """
+        Initialize the MaximizeLiftToDrag reward.
+        """
+        super().__init__(
+            reward_type="MaximizeLiftToDrag",
+            stretch_factor=stretch_factor,
+            stretch_type=stretch_type,
+        )
+        self.bad_reward = bad_reward
+        self.start_step = start_step
+        self.num_objects = num_objects
+
+        # individual object weights in force reward
+        if object_weights is not None and len(object_weights) != num_objects:
+            raise ValueError("Length of object_weights must match num_objects.")
+        self.object_weights = (
+            object_weights if object_weights is not None else [1.0] * num_objects
+        )
+
+        # TODO: need to check that
+        self.object_containers = self._build_object_containers(
+            n_obj=num_objects, x0=3.0, y0=2.0, chord=1.0, spacing=0.0
+        )
+
+        self.mu = 1e-3  # dynamic viscosity
+
+    def _build_object_containers(
+        self, n_obj: int, x0: float, y0: float, chord: float, spacing: float
+    ) -> dict | None:
+        """
+        Create object container boxes dict for the force computation.
+        """
+        return build_object_containers(
+            n_obj=n_obj, x0=x0, y0=y0, chord=chord, spacing=spacing
+        )
+
+    def compute_reward(
+        self,
+        ep: int,
+        xdmf_path: str,
+        feature_names: dict = {},
+        save_data: bool = True,
+        load_data: bool = False,
+        airfoil_surface: float = 0.0,
+        airfoil_target_surface:float = 0.0,
+    ) -> float:
+        """
+        Compute the reward for a given case based on the average lift and drag forces
+
+        Args:
+            ep (int): Episode number.
+            xdmf_path (str): Path to the XDMF file of the case.
+            feature_names (dict): Dictionary mapping feature names used in the XDMF file.
+            Needs to include keys for velocity, pressure, and nodetype.
+            save_data (bool): Whether to save computed forces to a CSV file.
+            load_data (bool): Whether to load forces from a CSV file instead of computing from XDMF.
+        Returns:
+            reward (float): Computed reward value.
+        """
+        if load_data:
+            # load forces from csv file
+            forces_file = os.path.abspath(
+                os.path.join(os.path.dirname(xdmf_path), f"forces_{ep}.csv")
+            )
+            if not os.path.exists(forces_file):
+                raise ValueError(f"forces file {forces_file} does not exist.")
+            forces_df = pd.read_csv(forces_file)
+        else:
+            forces_df = compute_forces_from_xdmf(
+                case_xdmf_path=xdmf_path,
+                mu=self.mu,
+                feature_names=feature_names,
+                start_step=self.start_step,
+                object_containers=self.object_containers,
+                verbose=False,
+            )
+        # save forces to file
+        if save_data and not load_data:
+            forces_file = os.path.abspath(
+                os.path.join(os.path.dirname(xdmf_path), f"forces_{ep}.csv")
+            )
+            if not os.path.exists(forces_file):
+                forces_df.to_csv(forces_file, index=False)
+
+        # actual reward computation
+        reward = 0
+        for obj_id, obj_weight in enumerate(self.object_weights):
+            drag = forces_df[forces_df["Object"] == obj_id]["Fx"].mean()
+            lift = forces_df[forces_df["Object"] == obj_id]["Fy"].mean()
+            reward += obj_weight * lift/drag
+        sface_penalty = np.abs(airfoil_target_surface-airfoil_surface)
+        reward -= 40*sface_penalty
+       
+        return self.contrast_stretch(reward)
+    
+
+class MaximizeEndurance(Reward):
+    def __init__(
+        self,
+        start_step: int = 150,
+        bad_reward: float = -10,
+        num_objects: int = 1,
+        object_weights: List[float] = None,
+        stretch_factor: float | None = None,
+        stretch_type: str = "lin",
+    ):
+        """
+        Initialize the MaximizeEndurance reward.
+        """
+        super().__init__(
+            reward_type="MaximizeEndurance",
+            stretch_factor=stretch_factor,
+            stretch_type=stretch_type,
+        )
+        self.bad_reward = bad_reward
+        self.start_step = start_step
+        self.num_objects = num_objects
+
+        # individual object weights in force reward
+        if object_weights is not None and len(object_weights) != num_objects:
+            raise ValueError("Length of object_weights must match num_objects.")
+        self.object_weights = (
+            object_weights if object_weights is not None else [1.0] * num_objects
+        )
+
+        # TODO: need to check that
+        self.object_containers = self._build_object_containers(
+            n_obj=num_objects, x0=0, y0=1.5, chord=2.0, spacing=4.0
+        )
+
+        self.mu = 1e-3  # dynamic viscosity
+
+    def _build_object_containers(
+        self, n_obj: int, x0: float, y0: float, chord: float, spacing: float
+    ) -> dict | None:
+        """
+        Create object container boxes dict for the force computation.
+        """
+        return build_object_containers(
+            n_obj=n_obj, x0=x0, y0=y0, chord=chord, spacing=spacing
+        )
+
+    def compute_reward(
+        self,
+        ep: int,
+        xdmf_path: str,
+        feature_names: dict = {},
+        save_data: bool = True,
+        load_data: bool = False,
+        airfoil_surface: float = 0.0,
+        airfoil_target_surface:float = 0.0,
+    ) -> float:
+        """
+        Compute the reward for a given case based on the average lift and drag forces
+
+        Args:
+            ep (int): Episode number.
+            xdmf_path (str): Path to the XDMF file of the case.
+            feature_names (dict): Dictionary mapping feature names used in the XDMF file.
+            Needs to include keys for velocity, pressure, and nodetype.
+            save_data (bool): Whether to save computed forces to a CSV file.
+            load_data (bool): Whether to load forces from a CSV file instead of computing from XDMF.
+        Returns:
+            reward (float): Computed reward value.
+        """
+        if load_data:
+            # load forces from csv file
+            forces_file = os.path.abspath(
+                os.path.join(os.path.dirname(xdmf_path), f"forces_{ep}.csv")
+            )
+            if not os.path.exists(forces_file):
+                raise ValueError(f"forces file {forces_file} does not exist.")
+            forces_df = pd.read_csv(forces_file)
+        else:
+            forces_df = compute_forces_from_xdmf(
+                case_xdmf_path=xdmf_path,
+                mu=self.mu,
+                feature_names=feature_names,
+                start_step=self.start_step,
+                object_containers=self.object_containers,
+                verbose=False,
+            )
+        # save forces to file
+        if save_data and not load_data:
+            forces_file = os.path.abspath(
+                os.path.join(os.path.dirname(xdmf_path), f"forces_{ep}.csv")
+            )
+            if not os.path.exists(forces_file):
+                forces_df.to_csv(forces_file, index=False)
+
+        # actual reward computation
+        reward = 0
+        for obj_id, obj_weight in enumerate(self.object_weights):
+            drag = forces_df[forces_df["Object"] == obj_id]["Fx"].mean()
+            lift = forces_df[forces_df["Object"] == obj_id]["Fy"].mean()
+            reward += obj_weight * (np.sign(lift)*np.power(np.abs(lift), 3/2))/drag
+            
+        sface_penalty = np.abs(airfoil_target_surface-airfoil_surface)
+        reward -= 40*sface_penalty
+       
+        return self.contrast_stretch(reward)    
 
 class MinimizeL2AvgFx(MinimizeAvgFx):
     def __init__(
@@ -1448,7 +1659,7 @@ def parser():
             "Type of reward to compute. Choices include: VelocityFluctuation, MinimizeAvgFx, "
             "MaximizeAvgFx, MinimizeAvgFy, MaximizeAvgLift, MaximizeAvgDownforce, MinimizeL2AvgFx, "
             "MinimizeL2AvgFy, MinimizeCombinedForces, MinimizeSqrtAvgFx, MinimizeSqrtAvgFy, "
-            "MinimizeSpecificFy"
+            "MinimizeSpecificFy, MaximizeLiftToDrag, MaximizeEndurance"
         ),
     )
     parser.add_argument(

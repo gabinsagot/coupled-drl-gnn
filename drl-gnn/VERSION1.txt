@@ -1,0 +1,1 @@
+V1 of the DRL - GNN coupling. Uses gmsh isotropic domain of size 12 by 4, trained from DRL outputs.

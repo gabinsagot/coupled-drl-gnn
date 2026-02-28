@@ -15,8 +15,7 @@ from graphdrl.utils.meshio_mesh import (
 )
 from graphdrl.utils.nodetype import NodeType
 
-
-BASE_FEATURES = ["NodeType", "LevelSetObject", "Vitesse", "Pression"]
+BASE_FEATURES = ["NodeType", "LevelSetObject", "LSF", "Vitesse", "Pression"]
 
 
 class Trajectory:
@@ -302,6 +301,31 @@ class Trajectory:
             self.meshes[step].point_data["Vitesse"] = velocity
 
 
+def create_full_trajectory_airfoil(
+    parameters: dict,
+    empty_trajectory,
+    output_name: str = "full_traj.xdmf",) -> Trajectory:
+
+    # full trajectory parameters
+    trajectory_length = parameters["traj_parameters"].get("trajectory_length", 600)
+    inlet_profile_type = parameters["traj_parameters"].get("inlet_type", "uniform")
+    inlet_velocity_amplitude = parameters["traj_parameters"].get("inlet_amplitude", 1.0)
+    apply_wall_bc = parameters["traj_parameters"].get("apply_wall_bc", True)
+    # extend to full trajectory
+    full_trajectory = make_full_trajectory_from_empty(
+        empty_trajectory=empty_trajectory,
+        num_steps=trajectory_length,
+        output_name=output_name,
+        inlet_profile=inlet_profile_type,
+        inlet_amplitude=inlet_velocity_amplitude,
+        apply_wall_bc=apply_wall_bc,
+        save=False,
+    )
+    # save
+    full_trajectory.save(filename=output_name)
+    return full_trajectory
+
+
 def create_trajectory(
     path: str,
     parameters: dict,
@@ -327,6 +351,7 @@ def create_trajectory(
     Returns:
         The created full trajectory (Trajectory, of trajectory_length frames specified in parameters dict).
     """
+
     # create empty trajectory
     empty_trajectory = make_empty_trajectory(
         path=path,
@@ -451,6 +476,26 @@ def make_empty_trajectory(
     return trajectory
 
 
+def make_empty_trajectory_airfoil(meshes, times, dt):
+    """
+    Create an empty trajectory.
+    This uses the geometry class to create the mesh and needs configuration parameters for the mesh generation.
+    These include domain parameters, configuration meta parameters, and specific geometry parameters.
+
+    Args:
+        path: Path to save the mesh at (typically the environment path)
+        parameters: Configuration parameters for geometry, mesh, and trajectory. \
+        See environment_config/panels.json for an example.
+        geometry_class: Geometry class instance for mesh creation.
+        geometry_args: Arguments for the geometry class (dim, number of objects, angles, etc.)
+        init_features: Whether to initialize features (nodetype, levelset) in the mesh.
+    Returns:
+        The created full trajectory (Trajectory, of trajectory_length frames specified in parameters dict).
+    """
+
+    trajectory = Trajectory(meshes=meshes, times=times, timestep=dt)
+    return trajectory
+
 def make_full_trajectory_from_empty(
     empty_trajectory: Trajectory,
     num_steps: int = 600,
@@ -477,6 +522,7 @@ def make_full_trajectory_from_empty(
     Returns:
         The full trajectory (Trajectory) created.
     """
+
     # check
     if len(empty_trajectory) > 1:
         raise ValueError(
@@ -496,10 +542,11 @@ def make_full_trajectory_from_empty(
     empty_trajectory.extend(total_length=num_steps, which="first")
     # wall bc
     if apply_wall_bc:
-        empty_trajectory.apply_wall_bc(start_step=0, end_step=None)
+        empty_trajectory.apply_wall_bc(start_step=1, end_step=None)
     # save
     if save:
         empty_trajectory.save(filename=output_name)
+
     return empty_trajectory
 
 

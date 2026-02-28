@@ -26,6 +26,8 @@
 	  { Modele= DefinitionObject }
       { Modele= GeoObject }
 	  { Modele= DistanceObject }
+	  { Modele= DistanceFiltree }
+	  { Modele= DistanceNaca }
 	  { Modele= Corners }
 	  { Modele= NodeType }
     }
@@ -54,8 +56,8 @@
         { Repere=
             { Dimension= 2 } 
             { Nom= WallIn }
-            { Origine= -7 0 } 
-            { Normale= 1 0 } 
+            { Origine= 0 0 }
+            { Normale= 1 0 }
         }
     }
     { Dependance= 
@@ -127,8 +129,8 @@
         { Repere=
             { Dimension= 2 } 
             { Nom= WallBottom }
-            { Origine= 0 0 } 
-            { Normale= 0 1 } 
+            { Origine= 0 0 }
+            { Normale= 0 1 }
         }
     }
     { Dependance= 
@@ -197,8 +199,8 @@
         { Repere=
             { Dimension= 2 } 
             { Nom= WallOut }
-            { Origine= 93 0 } 
-            { Normale= -1 0 } 
+            { Origine= 12 0 }
+            { Normale= -1 0 }
         }
     }
     { Dependance= 
@@ -266,8 +268,8 @@
         { Repere=
             { Dimension= 2 } 
             { Nom= WallTop }
-            { Origine= 0 15 } 
-            { Normale= 0 -1 } 
+            { Origine= 0 4 }
+            { Normale= 0 -1 }
         }
     }
     { Dependance= 
@@ -402,6 +404,82 @@
 	}
 }
 
+{ DistanceFiltree=
+	{ Type= ModeleArithmetique }
+		{ Data=
+			{ Champ= { Type= P1_Scalaire_Par }{ Nom= LSF }{ Data= ValeurItem 1 0.0 }}
+			{ Champ= { Type= P1_Scalaire_Par }{ Nom= aux0 }{ Data= ValeurItem 1 0.0 }}			
+			{ Champ= { Type= P1_Scalaire_Par }{ Nom= aux1 }{ Data= ValeurItem 1 0.0 }}
+			{ Champ= { Type= P1_Scalaire_Par }{ Nom= aux2 }{ Data= ValeurItem 1 0.0 }}
+			{ Champ= { Type= P1_Scalaire_Par }{ Nom= aux3 }{ Data= ValeurItem 1 0.0 }}
+			{ Champ= { Type= P1_Scalaire_Par }{ Nom= aux4 }{ Data= ValeurItem 1 0.0 }}
+			{ Champ= { Type= P1_Scalaire_Par }{ Nom= epsilon }{ Data= ValeurItem 1 0.1 }}
+			{ Champ= { Type= P1_Scalaire_Par }{ Nom= MoinsUn }{ Data= ValeurItem 1 -1.0 }}
+
+
+		}
+	{ Operation= aux0 = LevelSetObject }		
+	{ Operation= aux0 /= epsilon }		
+	{ Operation= aux1 EXP aux0 }
+	{ Operation= aux2 = aux0 }
+	{ Operation= aux2 *= MoinsUn }
+	{ Operation= aux2 EXP aux2 }
+	{ Operation= aux3 = aux1 }
+	{ Operation= aux3 += aux2 }
+	{ Operation= aux4 = aux1 }
+	{ Operation= aux4 -= aux2 }
+	{ Operation= LSF = aux4 }
+	{ Operation= LSF /= aux3 }
+
+	{ DependanceModifiable=
+		{ Champ= LSF }
+		{ Champ= aux0 }		
+		{ Champ= aux1 }
+		{ Champ= aux2 }
+		{ Champ= aux3 }
+		{ Champ= aux4 }
+	}
+
+	{ Dependance=
+        { Maillage= MaillagePrincipal }
+        { Champ= LevelSetObject }
+		{ Champ= MoinsUn }
+		{ Champ= epsilon }		
+	}
+}
+
+
+{ DistanceNaca=
+	{ Type= ModeleArithmetique }
+		{ Data=
+			{ Champ= 
+				{ Type= P1_Scalaire_Par }
+				{ Nom= NewAppartientObjet }
+				{ Data= ValeurItem 1 0.0 }                        // ##
+			}
+		}
+	{ Operation= NewAppartientObjet = BordNoeud }
+	{ Operation= NewAppartientObjet -= AppartientWallIn }
+	{ Operation= NewAppartientObjet -= AppartientWallOut }
+	{ Operation= NewAppartientObjet -= AppartientWallTop }
+	{ Operation= NewAppartientObjet -= AppartientWallBottom }
+	{ Operation= NewAppartientObjet >? Zero }
+
+	{ DependanceModifiable=
+		{ Champ= NewAppartientObjet }
+	}
+
+	{ Dependance=
+        { Maillage= MaillagePrincipal }
+        { Champ= AppartientWallIn }
+		{ Champ= AppartientWallOut }
+		{ Champ= AppartientWallTop }
+		{ Champ= AppartientWallBottom }
+		{ Champ= BordNoeud }
+		{ Champ= Zero }
+	}
+}
+
 /////////////////////////////////////////////////////
 ////////// NODE TYPE (FOR GNN) //////////////////////
 /////////////////////////////////////////////////////
@@ -416,7 +494,6 @@
 	}
 	{ Dependance=
 		{ Maillage= MaillagePrincipal }
-		{ Champ= AppartientObject }
 		{ Champ= AppartientWallIn }
 		{ Champ= AppartientWallOut }
 		{ Champ= AppartientWallBottom }
@@ -457,12 +534,13 @@
 		{ Champ= { Type= P0C_Scalaire_Par }	{ Nom= Six }			{ Data= ValeurItem 1 6 } }
 		{ Champ= { Type= P1_Scalaire_Par }	{ Nom= Inflow }			{ Data= ValeurItem 1 0 } }		
 		{ Champ= { Type= P1_Scalaire_Par }	{ Nom= Outflow }		{ Data= ValeurItem 1 0 } }		
-		{ Champ= { Type= P1_Scalaire_Par }	{ Nom= WallBoundary }	{ Data= ValeurItem 1 0 } }	
-		{ Champ= { Type= P1_Scalaire_Par }	{ Nom= Object }			{ Data= ValeurItem 1 0 } }	
+		{ Champ= { Type= P1_Scalaire_Par }	{ Nom= WallBoundary }	{ Data= ValeurItem 1 0 } }
+		{ Champ= { Type= P1_Scalaire_Par }	{ Nom= Obstacle }		{ Data= ValeurItem 1 0 } }
 	}
 	{ Dependance=
 		{ Maillage= MaillagePrincipal }
-		{ Champ= AppartientObject }
+		// { Champ= AppartientObject }
+		{ Champ= NewAppartientObjet }
 		{ Champ= AppartientWallIn }
 		{ Champ= AppartientWallOut }
 		{ Champ= AppartientWallBottom }
@@ -479,8 +557,7 @@
 		{ Champ= CornerTopRight }
 		{ Champ= Inflow }
 		{ Champ= Outflow }
-		{ Champ= WallBoundary }
-		{ Champ= Object }
+		{ Champ= Obstacle }
 	}
 	// inflow
 	{ Operation= Inflow = AppartientWallIn }
@@ -488,20 +565,18 @@
 	// outflow
 	{ Operation= Outflow = AppartientWallOut }
 	{ Operation= Outflow += AppartientWallTop }
+	{ Operation= Outflow += AppartientWallBottom }
 	{ Operation= Outflow -= CornerTopLeft }
 	{ Operation= Outflow -= CornerTopRight }
 	{ Operation= Outflow -= CornerBottomRight }
+	{ Operation= Outflow -= CornerBottomLeft }
 	{ Operation= Outflow *= Five }
-	// object
-	{ Operation= Object = AppartientObject }
-	// wall boundary
+	// Obstacle
+	{ Operation= Obstacle += NewAppartientObjet }
 	// { Operation= WallBoundary += AppartientObject }
-	{ Operation= WallBoundary += AppartientWallBottom }
-	{ Operation= WallBoundary -= CornerBottomLeft }
-	{ Operation= WallBoundary *= Six }
+	// { Operation= WallBoundary *= Six }
 	// All node types
 	{ Operation= NodeType = Inflow }
 	{ Operation= NodeType += Outflow }
-	{ Operation= NodeType += WallBoundary }
-	{ Operation= NodeType += Object }
+	{ Operation= NodeType += Obstacle }
 }

@@ -1,0 +1,35 @@
+{
+    "case": "foil",
+    "dim": 2,
+    "geometry_parameters":{
+        "chord": 2,
+        "thickness": 0.1,
+        "span": 0,
+        "origin": [0,1.5,0],
+        "spacing": 4
+    },
+    "domain_parameters":{
+        "origin_x": 0,
+        "origin_y": 0,
+        "origin_z": 0,
+        "dx": 12,
+        "dy": 4,
+        "dz": 0
+    },
+    "traj_parameters":{
+        "dt": 0.1,
+        "trajectory_length":300,
+        "Hbox123": [0.005, 0.5, 2.0],
+        "mesh_adapt": false,
+        "number_cores": 2,
+        "inlet_type": "uniform",
+        "inlet_amplitude": 1.0,
+        "driver": "environment_config/driver/laffitte_cfd_driver"
+    },
+    "gnn_parameters":{
+        "model_path":"environment_config/models/gnn-iso-drl.ckpt",
+        "traj_config_path":"environment_config/trajectory_airfoil.json",
+        "predict_config_path":"environment_config/predict_airfoil.json",
+        "no_edge_feature": true
+    }
+}
