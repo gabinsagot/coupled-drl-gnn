@@ -1,0 +1,45 @@
+{
+    "case": "airfoil",
+    "case_name": "airfoil_tilt_aniso",
+    "num_configs": 100,
+    "configs_pool_path": "pools/configs_pool_airfoil_tilt_.txt",
+    "driver": "drivers/laffitte_cfd_driver",
+    "shift_x_objects": true,
+    "number_parallel_jobs": 8,
+    "dim": 2,
+    "geometry_parameters": {
+        "number_airfoils": [1, 1],
+        "airfoil_type": "NACA0010",
+        "chord": [0.5, 1.5],
+        "thickness": [0.05, 0.5],
+        "angle_of_attack": [-30, 30],
+        "x_object": [-2, 3],
+        "y_object": [-2.5, 2.5]
+    },
+    "domain_parameters": {
+        "origin_x": -5,
+        "origin_y": -5,
+        "origin_z": 0,
+        "dx": 30,
+        "dy": 10,
+        "dz": 0
+    },
+    "cfd_parameters": {
+        "PasDeTemps": 0.01,
+        "Rho1": 1,
+        "Eta1": 1e-3,
+        "VxIn": 1,
+        "FrequenceStockage_vtk": 10,
+        "Hbox123": [0.0025, 0.5, 1.0],
+        "mesh_adapt": true,
+        "calc_force": true,
+        "variable_inlet": false,
+        "number_cores": 8
+    },
+    "graph_parameters": {
+        "vtu_start_in_seconds": 0,
+        "how_many_vtu": 300,
+        "features": ["Temps", "Vitesse", "Pression", "LevelSetObject","NodeType"],
+        "multigrid": false
+    }
+}

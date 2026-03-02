@@ -1,0 +1,36 @@
+Metadata-Version: 2.4
+Name: airfoil-dataset
+Version: 0.1.0
+Summary: Create an airfoil cfd dataset for GNN training
+Author-email: "T. Michel" <herodote110@gmail.com>
+Project-URL: homepage, https://github.com/theodore-michel/airfoil-dataset
+Project-URL: repository, https://github.com/theodore-michel/airfoil-dataset/
+Project-URL: bug-tracker, https://github.com/theodore-michel/airfoil-dataset/issues
+Keywords: dataset,gmsh,cfd
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: Topic :: Software Development :: Build Tools
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3 :: Only
+License-File: LICENSE
+Requires-Dist: pandas==2.2.3
+Requires-Dist: glob2
+Requires-Dist: setuptools>=42
+Requires-Dist: wheel
+Requires-Dist: gmsh==4.11.1
+Requires-Dist: meshio @ git+https://github.com/pjekenrico/meshio.git
+Requires-Dist: numpy==2.2.3
+Requires-Dist: scipy==1.15.2
+Requires-Dist: matplotlib==3.10.1
+Requires-Dist: networkx
+Requires-Dist: h5py==3.13.0
+Requires-Dist: tqdm==4.67.1
+Requires-Dist: scikit-learn==1.7.0
+Provides-Extra: igl
+Requires-Dist: libigl; extra == "igl"
+Dynamic: license-file

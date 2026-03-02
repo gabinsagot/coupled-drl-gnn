@@ -1,0 +1,75 @@
+{ Adaptateur=
+    { Type= ModeleDeModeles }
+    { Data=
+	{ Champ=             
+            { Type= P0C_Scalaire_Par }             
+            { Nom= Adapte }             
+            { Data= ValeurItem 1 0 }         
+        }          	          
+	{ Champ=             
+            { Type= P0C_Scalaire_Par }             
+            { Nom= InitialMeshFrequency }             
+            { Data= ValeurItem 1 0 }         
+        }          	          
+
+    }
+
+    { Dependance=      
+        { Maillage= MaillagePrincipal } 
+		{ Modele= Trigger } 
+		{ Modele= AdapteSi } 
+    }
+}
+
+{ AdapteSi=
+   { Type= ModeleConditionnel }
+   { Dependance=
+      { Maillage= MaillagePrincipal }
+      { ChampCondition= Adapte }
+      { ModeleFalse= Adaptation }
+   }
+}
+
+{ Adaptation=                                  
+    { Type= ModeleDeModeles }
+    { Data=	
+    }
+    { Dependance=      
+	    { Maillage= MaillagePrincipal }  
+		{ Modele= MetriqueGenerale }        
+	 	{ Modele= Sorties }          
+		{ Modele= MaillagePrincipal  }                  
+     } 
+} 
+
+
+
+{ Trigger=
+    { Type= ModeleArithmetique }
+    { Data=	
+
+ 	{ Champ=             
+            { Type= P0C_Scalaire_Par }             
+            { Nom= Adaptateur }             
+            { Data= ValeurItem 1 20 }         
+        }          	          
+ 	{ Champ=             
+            { Type= P0C_Scalaire_Par }             
+            { Nom= TotalInitialMeshing }             
+            { Data= ValeurItem 1 20 }         
+        }          	          
+    }
+   { Dependance= 
+        { Maillage= MaillagePrincipal }
+        { Champ= CompteurTemps }
+         { Champ= Adaptateur }
+       
+    }
+    { DependanceModifiable= 
+         { Champ= Adaptateur }
+    }
+	
+    { Operation= Adapte = CompteurTemps }
+    { Operation= Adapte %= Adaptateur }
+}
+ 

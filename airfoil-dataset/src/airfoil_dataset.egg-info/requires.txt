@@ -1,0 +1,16 @@
+pandas==2.2.3
+glob2
+setuptools>=42
+wheel
+gmsh==4.11.1
+meshio @ git+https://github.com/pjekenrico/meshio.git
+numpy==2.2.3
+scipy==1.15.2
+matplotlib==3.10.1
+networkx
+h5py==3.13.0
+tqdm==4.67.1
+scikit-learn==1.7.0
+
+[igl]
+libigl

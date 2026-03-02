@@ -1,0 +1,24 @@
+{ Parametres= 
+    { Type= ModeleConstant }
+    { Data= 
+	
+        { Champ= { Type= P0C_Scalaire_Par }	{ Nom= PrecisionFrontieres }	{ Data= ValeurItem 1 1e-6 }}
+		{ Champ= { Type= P0C_Scalaire_Par }	{ Nom= Eta1 }					{ Data= ValeurItem 1 .00001 }}
+		{ Champ= { Type= P0C_Scalaire_Par }	{ Nom= Rho1 }					{ Data= ValeurItem 1 1 }}
+		{ Champ= { Type= P0C_Scalaire_Par }	{ Nom= Oui }					{ Data= ValeurItem 1 1.0 }}
+		{ Champ= { Type= P0C_Scalaire_Par }	{ Nom= Zero }					{ Data= ValeurItem 1 0.0e-00 }}
+		{ Champ= { Type= P0C_Scalaire_Par }	{ Nom= Un }						{ Data= ValeurItem 1 1 }}
+		{ Champ= { Type= P0C_Scalaire_Par }	{ Nom= mVs }					{ Data= ValeurItem 1 -1 }}
+		{ Champ= { Type= P0C_Scalaire_Par }	{ Nom= VxIn }					{ Data= ValeurItem 1 1.0 }}
+		{ Champ= { Type= P0C_Scalaire_Par }	{ Nom= AmplitudeInlet }			{ Data= ValeurItem 1 1.0 }}
+
+		{ Champ= { Type= P1_Scalaire_Par }	{ Nom= Alpha }					{ Data= ValeurItem 1 0 }}
+		
+		{ Champ= { Type= P1_Vecteur_Par }	{ Nom= Gravite }				{ Data: Dimension/gravite.txt }}
+	}
+    { Dependance= 
+        { Maillage= MaillagePrincipal }
+    }
+}
+
+

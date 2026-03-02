@@ -1,0 +1,32 @@
+{ Geometres=
+	{ Type= ModeleDeModeles }
+	{ Dependance= 
+		{ Maillage= MaillagePrincipal }
+		{ Modele= GeometresE }
+		{ Modele= GeometresObjects }
+	}
+}
+
+{ InitAlpha=
+    { Type= ModeleDeModeles }
+	{ Data=
+		{ Champ= 
+			{ Type= P1_Scalaire_Par }
+			{ Nom= Distance }
+			{ Data= ValeurItem 1 0 }
+		}
+		{ Champ= 
+			{ Type= P1_Scalaire_Par }
+			{ Nom= Appartient }
+			{ Data= ValeurItem 1 0 }
+		}
+		{ Champ= 
+			{ Type= P0C_Scalaire_Par }
+			{ Nom= uuu }
+			{ Data= ValeurItem 1 -1.0 }
+		}
+	}
+      { Dependance= 
+        { Maillage= MaillagePrincipal }
+      }
+}

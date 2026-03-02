@@ -1,0 +1,47 @@
+{
+    "case": "airfoil",
+    "case_name": "morphed_airfoil_iso_short",
+    "num_configs": 100,
+    "configs_pool_path": "pools/morphed_airfoil_iso_Re1000.txt",
+    "driver": "drivers/laffitte_cfd_driver",
+    "shift_x_objects": true,
+    "number_parallel_jobs": 8,
+    "dim": 2,
+    "geometry_parameters": {
+        "number_airfoils": [1, 1],
+        "airfoil_type": "morphed",
+        "camber":[[0.01,0.1], [0.01,0.15], [0.01,0.15], [0.01,0.15], [0.01,0.1]],
+        "thickness": [[0.05,0.3], [0.05,0.3], [0.05,0.3]],
+        "chord": [1.0, 1.0],
+        "angle_of_attack": [-30, 30],
+	"angle_step": 5,
+        "x_object": [2, 3],
+        "y_object": [1.5, 2.5]
+    },
+    "domain_parameters": {
+        "origin_x": 0,
+        "origin_y": 0,
+        "origin_z": 0,
+        "dx": 12,
+        "dy": 4,
+        "dz": 0
+    },
+    "cfd_parameters": {
+        "PasDeTemps": 0.01,
+        "Rho1": 1,
+        "Eta1": 1e-3,
+        "VxIn": 1,
+        "FrequenceStockage_vtk": 10,
+        "Hbox123": [0.0025, 0.5, 1.0],
+        "mesh_adapt": false,
+        "calc_force": true,
+        "variable_inlet": false,
+        "number_cores": 8
+    },
+    "graph_parameters": {
+        "vtu_start_in_seconds": 0,
+        "how_many_vtu": 300,
+        "features": ["Temps", "Vitesse", "Pression", "LSF", "NodeType"],
+        "multigrid": false
+    }
+}

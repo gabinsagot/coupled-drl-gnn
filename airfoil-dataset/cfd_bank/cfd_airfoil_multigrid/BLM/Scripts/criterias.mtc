@@ -1,0 +1,293 @@
+
+{ BLMComputeAlphInc=
+    { Type= ModeleArithmetique }
+    { Dependance= 
+        { Maillage= MaillagePrincipal }
+ 
+		{ Champ= BLMOne }  
+        { Champ= BLMMaxIteration } 
+    }
+    { DependanceModifiable=  
+
+        { Champ= BLMAlphainc }  
+    }
+    { Operation= BLMAlphainc = BLMOne }
+    { Operation= BLMAlphainc /= BLMMaxIteration }
+
+   
+}
+
+{ BLMTestingMeshSize= 
+	{ Type= ModeleDeModeles }
+   	{ Data=
+        { Champ= 
+			{ Type= P0C_Scalaire_Par }
+			{ Nom= BLMCoefficientNA }
+			{ Data= ValeurItem 1 0 }
+	   	}
+		{ Champ= 
+			{ Type= P0C_Scalaire_Par }
+			{ Nom= BLMAlpha }
+			{ Data= ValeurItem 1 0 }
+	   	}
+		{ Champ= 
+			{ Type= P0C_Scalaire_Par }
+			{ Nom= BLMAlphainc }
+			{ Data= ValeurItem 1 0.1 }
+	   	}
+		{ Champ= 
+			{ Type= P0C_Scalaire_Par }
+			{ Nom= BLMPower }
+			{ Data= ValeurItem 1 0 }
+	   	}
+		{ Champ= 
+			{ Type= P0C_Scalaire_Par }
+			{ Nom= BLMGetPower }
+			{ Data= ValeurItem 1 0 }
+	   	}		
+	}
+	{ Dependance=  
+        { Maillage= MaillagePrincipal } 	
+        
+       	
+        { Modele= BLMUpdateMeshsizeInitally }
+        { Modele= BLMComputeMinMeshSize }
+        { Modele= BLMTestMinMeshsize }
+        { Modele= BLMAdaptIf } 	
+       
+	}
+}
+
+{ BLMUpdateMeshsizeInitally=
+    { Type= ModeleArithmetique }
+    { Dependance= 
+        { Maillage= MaillagePrincipal }
+     
+        { Champ= BLMFacteur0 }
+		{ Champ= BLMZero } 
+		{ Champ= BLMHalf } 
+		{ Champ= BLMUn } 
+		{ Champ= BLMDeux } 
+		{ Champ= BLMAlphainc } 
+     
+    }
+    { DependanceModifiable= 
+        { Champ= BLMMeshsize }  
+		{ Champ= BLMMaxMesh2 }  
+        { Champ= BLMMaxMesh3 }  
+        { Champ= BLMMeshsize2 }  
+        { Champ= BLMMeshsize3 } 			
+        { Champ= BLMMeshsizebis } 			
+        { Champ= BLMAlpha } 			
+        { Champ= BLMPower } 			
+        { Champ= BLMGetPower } 			
+        { Champ= BLMHbox1MAx } 			
+
+    }
+    { Operation= BLMMeshsizebis = BLMMeshsize }
+    { Operation= BLMHbox1MAx = BLMMeshsize }
+    { Operation= BLMPower = BLMDeux }
+    { Operation= BLMPower -= BLMAlpha }
+    { Operation= BLMGetPower = BLMUn }
+    { Operation= BLMGetPower /= BLMPower }
+    { Operation= BLMMeshsizebis **= BLMGetPower }
+    { Operation= BLMMeshsize = BLMMeshsizebis }
+     Operation= BLMMeshsize *= BLMFacteur0 
+     Operation= BLMMaxMesh2 = BLMZero 
+     Operation= BLMMaxMesh3 = BLMZero 
+     Operation= BLMMeshsize2 = BLMZero 
+     Operation= BLMMeshsize3 = BLMZero 
+	
+ 
+}
+
+{ BLMComputeMinMeshSize=
+   { Type= ModeleParticulaire }
+   { Data=
+      { Champ=
+         { Type= P0C_Scalaire_Par }
+         { Nom= BLMObtainedMinSize }
+         { Data= ValeurItem 1 0.0 }
+      }
+	  { Champ=
+         { Type= P0C_Scalaire_Par }
+         { Nom= BLMPlusInfinity }
+         { Data= ValeurItem 1 10000 }
+      }
+    
+      { ItemSolveur=
+         { Type= ISMin }
+         { Operations=
+            { NbChampsATraiter= 1 }
+            { Numero= 0 }
+            { Initialise= BLMPlusInfinity }
+         }
+         { NbChampSolution= 1 }
+         { ChampSolution= BLMObtainedMinSize }
+         { NbChampParametre= 1 }
+         { ChampParametre= BLMMeshsize }
+      }
+   }
+   { Dependance=
+      { Maillage= MaillagePrincipal }
+      { Champ= BLMPlusInfinity }
+      { Champ= BLMMeshsize }
+   }
+}
+{ BLMTestMinMeshsize=
+    { Type= ModeleArithmetique }
+    { Dependance= 
+        { Maillage= MaillagePrincipal }    
+		{ Champ= BLMHbox1 }       
+		{ Champ= BLMZero }       
+    }
+    { DependanceModifiable= 
+        { Champ= BLMObtainedMinSize } 
+        { Champ= BLMCoefficientNA } 
+    }
+    { Operation= BLMCoefficientNA = BLMObtainedMinSize }
+    { Operation= BLMCoefficientNA <? BLMHbox1 }
+    
+}
+
+{ BLMAdaptIf=
+   { Type= ModeleConditionnel }
+   { Dependance=
+      { Maillage= MaillagePrincipal }
+      { ChampCondition= BLMCoefficientNA }
+      { ModeleFalse= BLMUpdateFactor }
+      { ModeleTrue= BLMFinish }
+   }
+}
+
+{ BLMUpdateFactor=
+    { Type= ModeleArithmetique }
+    { Dependance= 
+        { Maillage= MaillagePrincipal }
+        { Champ= BLMFacteur }
+        { Champ= BLMAlphainc }
+    }
+    { DependanceModifiable= 
+        { Champ= BLMFacteur0 }  
+        { Champ= BLMAlpha }  
+    }
+	{ Operation= BLMFacteur0 *= BLMFacteur }
+	 { Operation= BLMAlpha += BLMAlphainc }
+ 
+}
+
+{ BLMFinish=
+    { Type= ModeleDeModeles }
+      { Dependance= 
+        
+      { Maillage= MaillagePrincipal }
+   
+        
+      { Modele= BLMUpdateIncrements }
+      { Modele= BLMSorties4 }
+       Modele= BLMSorties   
+    }
+}
+
+{ BLMUpdateIncrements=
+    { Type= ModeleArithmetique }
+    { Dependance= 
+        { Maillage= MaillagePrincipal }
+        { Champ= BLMMaxIteration }
+    }
+    { DependanceModifiable= 
+        { Champ= BLMTemps }  
+    }
+	 { Operation= BLMTemps = BLMMaxIteration }
+ 
+}
+
+// ******************* initial factor ***********************
+
+
+{ BLMTargetFactor= 
+	{ Type= ModeleDeModeles }
+   	{ Data=
+        { Champ= 
+			{ Type= P0C_Scalaire_Par }
+			{ Nom= BLMCoefficientNAA }
+			{ Data= ValeurItem 1 0 }
+	   	}	
+	}
+	{ Dependance=  
+        { Maillage= MaillagePrincipal } 	
+        { Modele= BLMComputeAllMeshsize }
+        { Modele= BLMAverageMeshsize }
+        { Modele= BLMComputeInitialFactor }
+       
+	}
+}
+
+
+{ BLMComputeAllMeshsize=
+	{ Type= ModeleFonctionnel }
+	{ Data=
+		{ Champ= 
+		    { Type= P0_Scalaire_Par }
+			{ Nom= BLMhTetra }
+			{ Data= ValeurItem 1 0.0 }
+		}
+		{ SimplexSolveurFonctionnel=
+			{ Type= SsfArete }
+            { TypeDArete= moy }
+			{ NbChampSolution= 1 }
+			{ ChampSolution= BLMhTetra }
+ 		}
+	}
+	{ Dependance=
+		{ Maillage= MaillagePrincipal }
+		{ Champ= BLMhTetra }
+
+	}
+}
+{ BLMAverageMeshsize=
+        { Type= ModeleParticulaire }
+        { Data=
+           { Champ= 
+		    { Type= P0C_Scalaire_Par }
+			{ Nom= BLMAverageMeshsize }
+			{ Data= ValeurItem 1 0.0 }
+		}
+
+		 { ItemSolveur=
+                        { Type= ISSomme }
+                        { NbChampSolution= 1 }
+                        { ChampSolution= BLMAverageMeshsize }
+                        { NbChampParametre= 1 }
+                        { ChampParametre= BLMhTetra }
+				{ Operations= 
+					{ Moyenner= 1 }
+				}
+		 }
+        }
+        { Dependance=
+                { Maillage= MaillagePrincipal }
+                { Champ= BLMhTetra }
+        }
+        { DependanceModifiable= 
+	          { Champ= BLMAverageMeshsize }
+    	  }
+}
+
+{ BLMComputeInitialFactor=
+    { Type= ModeleArithmetique }
+    { Dependance= 
+        { Maillage= MaillagePrincipal }    
+		{ Champ= BLMAverageMeshsize }       
+		{ Champ= BLMHbox2 }       
+		{ Champ= BLMOne }       
+    }
+    { DependanceModifiable= 
+        { Champ= BLMFacteur0 } 
+    }
+    { Operation= BLMFacteur0 = BLMAverageMeshsize }
+    { Operation= BLMFacteur0 /= BLMHbox2 }
+	
+    { Operation= BLMFacteur0 > BLMOne }
+    
+}

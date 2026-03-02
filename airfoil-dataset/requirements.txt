@@ -1,0 +1,11 @@
+gmsh==4.11.1
+matplotlib==3.10.1
+meshio@git+https://github.com/pjekenrico/meshio.git
+numpy==2.2.3
+scipy==1.15.2
+pandas==2.2.3
+tqdm==4.67.1
+h5py==3.13.0
+glob2
+setuptools>=42
+scikit-learn==1.7.0

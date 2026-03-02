@@ -1,0 +1,181 @@
+{ DragLiftObject0= 
+	{ Type= ModeleDeModeles }
+	{ Data= 
+		{ Champ= { Type= P0C_Vecteur_Par }{ Nom= VectorXi0 }{ Data= ValeurItem 2 1 0 }}
+		{ Champ= { Type= P0C_Vecteur_Par }{ Nom= VectorYi0 }{ Data= ValeurItem 2 0 1 }}
+		{ Champ= { Type= P1_Vecteur_Par } { Nom= VectorX0 } { Data= ValeurItem 2 1 0 }}
+		{ Champ= { Type= P1_Vecteur_Par } { Nom= VectorY0 } { Data= ValeurItem 2 0 1 }}
+	}
+	{ Dependance=  
+    { Maillage= MaillagePrincipal }
+		{ Modele= StartCdCl0 }	
+ 		{ Modele= CalculCx0 } 
+ 		{ Modele= CalculCy0 } 
+ 		{ Modele= CalculCxS0 }
+ 		{ Modele= CalculCyS0 }
+        { Modele= UpdateCxyS0 }
+ 		{ Modele= Capteurs0 }
+	}
+}
+
+{ StartCdCl0=
+	{ Type= ModeleArithmetique }
+	{ Dependance= 
+		{ Maillage= MaillagePrincipal }
+		{ Champ= AppartientObject0 }
+		{ Champ= VectorXi0 }
+		{ Champ= VectorYi0 }
+		{ Champ= Zero }
+	}			
+  	{ DependanceModifiable= 
+		{ Champ= VectorX0 }
+		{ Champ= VectorY0 }
+  	}
+	{ Operation= VectorX0 = VectorXi0 }
+	{ Operation= VectorY0 = VectorYi0 }
+	{ Operation= VectorX0 *= AppartientObject0 }
+	{ Operation= VectorY0 *= AppartientObject0 }
+}
+
+{ CalculCx0=
+    { Type= ModeleFonctionnel }
+    { Data=
+      	{ Champ= { Type= P0_Scalaire_Par }{ Nom= Cx0 }{ Data= ValeurItem 1 0.0 }}
+      	{ SimplexSolveurFonctionnel=
+			{ Type= SsfDragLift }
+			{ NbChampSolution= 1 }
+			{ ChampSolution= Cx0 }
+			{ NbChampParametre= 7 }
+			{ ChampParametre= Pression Eta1 Vitesse VitesseMoins VectorX0 PasDeTemps Un }
+     	}
+		{ Boucle= Volume } 
+    }
+    { Dependance=
+        { Maillage= MaillagePrincipal }
+		{ Champ= Vitesse }
+        { Champ= VitesseMoins }
+        { Champ= PasDeTemps }
+        { Champ= Pression }
+        { Champ= Zero }
+		{ Champ= Un }
+        { Champ= VectorX0 }
+        { Champ= Eta1 }
+    }
+    { DependanceModifiable=
+		{ Champ= Cx0 }
+	}
+}
+
+
+{ CalculCy0=
+    { Type= ModeleFonctionnel }
+    { Data=
+		{ Champ= { Type= P0_Scalaire_Par }{ Nom= Cy0 }{ Data= ValeurItem 1 0.0 }}
+		{ SimplexSolveurFonctionnel=
+			{ Type= SsfDragLift }
+			{ NbChampSolution= 1 }
+			{ ChampSolution= Cy0 }
+			{ NbChampParametre= 7 }
+			{ ChampParametre= Pression Eta1 Vitesse VitesseMoins VectorY0 PasDeTemps Un }
+		}
+		{ Boucle= Volume } 
+    }
+    { Dependance=
+        { Maillage= MaillagePrincipal }
+		{ Champ= Vitesse }
+        { Champ= VitesseMoins }
+        { Champ= PasDeTemps }
+        { Champ= Pression }
+        { Champ= Zero }
+		{ Champ= Un }
+        { Champ= VectorY0 }
+        { Champ= Eta1 }
+    }
+    { DependanceModifiable=
+		{ Champ= Cy0 }
+	}
+}
+
+{ CalculCxS0=
+	{ Type= ModeleParticulaire }
+	{ Data=
+		{ Champ= { Type= P0C_Scalaire_Par }{ Nom= CxS0 }{ Data= ValeurItem 1 0.0 }}
+		{ Boucle= Volume }
+		{ ItemSolveur=
+			{ Type= ISSomme }
+			{ Operations=
+				{ Initialise= Zero }
+			}
+			{ NbChampSolution= 1 }
+			{ ChampSolution= CxS0 }
+			{ NbChampParametre= 1 }
+			{ ChampParametre= Cx0 }
+		}
+	}
+	{ Dependance=
+		{ Maillage= MaillagePrincipal }
+		{ Champ= Cx0 }
+		{ Champ= Zero }
+	}
+	{ DependanceModifiable=
+		{ Champ= CxS0 }
+	}
+} 
+
+{ CalculCyS0=
+	{ Type= ModeleParticulaire }
+	{ Data=
+		{ Champ= { Type= P0C_Scalaire_Par }{ Nom= CyS0 }{ Data= ValeurItem 1 0.0 }}
+		{ Boucle= Volume }
+		{ ItemSolveur=
+			{ Type= ISSomme }
+			{ Operations=
+				{ Initialise= Zero }
+			}
+			{ NbChampSolution= 1 }
+			{ ChampSolution= CyS0 }
+			{ NbChampParametre= 1 }
+			{ ChampParametre= Cy0 }
+		}
+	}
+	{ Dependance=
+		{ Maillage= MaillagePrincipal }
+		{ Champ= Cy0 }
+		{ Champ= Zero }
+	}
+	{ DependanceModifiable=
+		{ Champ= CyS0 }
+	}
+} 
+
+{ UpdateCxyS0=
+    { Type= ModeleArithmetique }
+    { Dependance=
+        { Maillage= MaillagePrincipal }
+        { Champ= mVs }
+    }
+    { DependanceModifiable=
+        { Champ= CxS0 }
+        { Champ= CyS0 }
+    }
+    { Operation= CxS0 *= mVs }
+    { Operation= CyS0 *= mVs }
+}
+
+{ Capteurs0=
+	{ Affichage= 1 }
+	{ Type= ModeleCapteur }
+	{ Data= 
+		{ NomFichier= Resultats/Efforts0 }
+		{ NbCapteurs= 0 }
+		{ HAdaptation= 1 }	
+	}
+	{ Dependance= 
+		{ Maillage= MaillagePrincipal }
+		{ Champ= CompteurTemps }
+		{ Champ= Temps }
+		{ Champ= CxS0 }
+		{ Champ= CyS0 }
+	}
+}
+

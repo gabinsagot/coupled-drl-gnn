@@ -1,0 +1,215 @@
+
+{ BLM =
+    { Type= ModeleDeModeles }
+
+    { Data=
+	    { Champ=             
+            { Type= P0C_Scalaire_Par }             
+            { Nom= BLMCompteurTemps }             
+            { Data= ValeurItem 1 0 }         
+        }     
+        { Champ=             
+            { Type= P0C_Scalaire_Par }             
+            { Nom= BLMPasDeTemps }             
+            { Data= ValeurItem 1 1 }         
+        }
+        { Champ=             
+            { Type= P0C_Scalaire_Par }             
+            { Nom= BLMTemps }             
+            { Data= ValeurItem 1 0 }         
+        }
+        { Champ=             
+            { Type= P0C_Scalaire_Par }             
+            { Nom= BLMMaxIterations }             
+            { Data= ValeurItem 1 50 }    
+        }
+		{ Champ=             
+            { Type= P0C_Scalaire_Par }             
+            { Nom= BLMMaxIteration }             
+            { Data= ValeurItem 1 50 }    
+        }        
+    }
+    { Dependance=  
+        { Maillage= MaillagePrincipal }
+        { Modele= BLMadaptation }
+    }
+}
+
+ 
+ 
+{ BLMadaptation =     
+    { Type= ModeleIncremental }     
+    { Data=         
+        { NomCompteur= BLMCompteurTemps }   
+    }     
+    { Dependance=        
+        { Maillage= MaillagePrincipal }
+        
+        { ModeleAvantDebut= BLMInitialisation }         
+        { ModeleIncrement= BLMCorps }         
+        { ModeleTerminaison= BLMFin }     
+    } 
+} 
+
+{ BLMInitialisation=
+    { Type= ModeleDeModeles }
+    { Dependance= 
+        { Maillage= MaillagePrincipal } 
+		{ Modele= BLMInteracteur } 
+		{ Modele= BLMForceMaxiter } 
+		{ Modele= BLMParametres } 
+		{ Modele= BLMComputeAlphInc } 
+		{ Modele= BLMBoxOrSurface } 
+		{ Modele= BLMTargetFactor } // not used...computing the ratio between the inital mesh size and the user specified mesh size
+        { Modele= BLMUpdateGradientMesh }
+		{ Modele= BLMMeshPreparation } // compute the distribution of the mesh size in box1, box2 and box3
+        { Modele= BLMSorties }	 // output inital file
+    }
+}
+
+{ BLMForceMaxiter=
+    { Type= ModeleArithmetique }
+    { Dependance= 
+        { Maillage= MaillagePrincipal }
+      { Champ= BLMMaxIteration }  
+    }
+    { DependanceModifiable=   
+      { Champ= BLMMaxIterations }  
+    }	
+	{ Operation= BLMMaxIterations = BLMMaxIteration }	
+}
+{ BLMCorps=     
+    { Type= ModeleDeModeles }     
+    { Dependance=  
+        { Maillage= MaillagePrincipal }
+		{ Modele= MaillagePrincipal } 
+        { Modele= BLMInteracteur } 
+		{ Modele= BLMForceMaxiter } 
+		{ Modele= BLMParametres } 
+		{ Modele= BLMBoxOrSurface } 		
+	    { Modele= BLMMeshPreparation } 
+		{ Modele= BLMIterationIncrement } // t = t + dt
+        { Modele= BLMSorties }	 
+        { Modele= BLMSorties3 }      
+    } 
+} 
+
+
+{ BLMIterationIncrement=     
+    { Type= ModeleTemporel }     
+    { Data=         
+        { NomTemps= BLMTemps }         
+        { NomPasDeTemps= BLMPasDeTemps } 
+    
+    } 
+    { DependanceModifiable= 
+        { Champ= BLMTemps } 
+    } 
+    { Dependance=         
+        { Maillage= MaillagePrincipal }               
+        { Champ= BLMPasDeTemps } 
+     
+    } 
+} 
+
+
+{ BLMFin=     
+    { Type= ModeleFinSurTemps }     
+    { Data=         
+        { NomTemps= BLMTemps }         
+        { NomTempsFin= BLMMaxIterations }     
+        
+    }     
+    { Dependance=         
+        { Maillage= MaillagePrincipal }         
+        { Champ= BLMTemps }         
+        { Champ= BLMMaxIterations }     
+    } 
+} 
+
+
+{ BLMSorties=
+    { Type= ModeleSortie }
+    { Data= 
+	{ Champ= 
+            { Type= P0C_Scalaire_Par }
+            { Nom= BLMFrequency }
+            { Data= ValeurItem 1 1 }                        
+      }
+        { NomFichier= OutputMesh/Mesh } 
+        { NomFrequence= BLMFrequency }
+        { NomCompteur= BLMCompteurTemps }
+        { TypeFichier= SortieVtu }
+    }
+    { Dependance= 
+        { Maillage= MaillagePrincipal }
+        { Champ= BLMCompteurTemps }
+    }
+
+    { DependanceAEcrire= 
+        { Maillage= MaillagePrincipal }	 	 
+        { Champ= BLMLevelSetLayer1 } 
+        { Champ= BLMLevelSetLayer2 } 
+        { Champ= BLMAppartient1 }
+        { Champ= BLMAppartient2 }
+        { Champ= BLMTailleDeMaille1 }  
+   }
+
+}
+
+
+{ BLMSorties3=
+	    { Type= ModeleSortie }
+	    { Data=        
+		   	
+	        { NomFichier= OutputMesh/Mesh }
+	        { NomFrequence= BLMFrequency }
+	        { NomCompteur= BLMCompteurTemps }
+	        { TypeFichier= SortieMtc } 
+			{ Format= fixed }
+			{ Precision= 15 }
+	    }
+	    { Dependance= 
+	        { Maillage= MaillagePrincipal }
+	        { Champ= BLMCompteurTemps }
+	        { Champ= BLMFrequency }
+	    }
+	    { DependanceAEcrire= 
+			{ Maillage= MaillagePrincipal }
+	    }
+}
+
+
+{ BLMSorties4=
+	    { Type= ModeleSortie }
+	    { Data=        
+		   	
+	        { NomFichier= OutputMesh/Mesh }
+	        { NomFrequence= BLMFrequency }
+	        { NomCompteur= BLMCompteurTemps }
+	        { TypeFichier= SortieNas } 
+	    }
+	    { Dependance= 
+	        { Maillage= MaillagePrincipal }
+	        { Champ= BLMCompteurTemps }
+	        { Champ= BLMFrequency }
+	    }
+	    { DependanceAEcrire= 
+			{ Maillage= MaillagePrincipal }
+	    }
+}
+
+{ BLMUpdateGradientMesh=
+    { Type= ModeleArithmetique }
+    { Dependance= 
+        { Maillage= MaillagePrincipal }
+        { Champ= BLMepsilonMesh }
+    }
+    { DependanceModifiable= 
+        { Champ= BLMGradientLevelSetP1 }  
+    }
+	
+    { Operation= BLMGradientLevelSetP1 += BLMepsilonMesh } 
+
+}
+

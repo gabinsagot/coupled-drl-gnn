@@ -1,0 +1,7 @@
+[console_scripts]
+convert = convert:main_convert
+dataset = main:main
+geometry = geometry:main_geometry
+plot = visualize.plot_configs:main_visualize
+postprocess = postprocess:main_postprocess
+simu = simulate:main_simulate

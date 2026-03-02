@@ -1,0 +1,181 @@
+{ DragLift= 
+	{ Type= ModeleDeModeles }
+	{ Data= 
+		{ Champ= { Type= P0C_Vecteur_Par }{ Nom= VectorXi }{ Data= ValeurItem 2 1 0 }}
+		{ Champ= { Type= P0C_Vecteur_Par }{ Nom= VectorYi }{ Data= ValeurItem 2 0 1 }}
+		{ Champ= { Type= P1_Vecteur_Par } { Nom= VectorX } { Data= ValeurItem 2 1 0 }}
+		{ Champ= { Type= P1_Vecteur_Par } { Nom= VectorY } { Data= ValeurItem 2 0 1 }}
+	}
+	{ Dependance=  
+    	{ Maillage= MaillagePrincipal }
+		{ Modele= StartCdCl }	
+ 		{ Modele= CalculCx } 
+ 		{ Modele= CalculCy } 
+ 		{ Modele= CalculCxS }
+ 		{ Modele= CalculCyS }
+        { Modele= UpdateCxyS }
+ 		{ Modele= Capteurs }
+	}
+}
+
+{ StartCdCl=
+	{ Type= ModeleArithmetique }
+	{ Dependance= 
+		{ Maillage= MaillagePrincipal }
+		{ Champ= AppartientObject }
+		{ Champ= VectorXi }
+		{ Champ= VectorYi }
+		{ Champ= Zero }
+	}			
+  	{ DependanceModifiable= 
+		{ Champ= VectorX }
+		{ Champ= VectorY }
+  	}
+	{ Operation= VectorX = VectorXi }
+	{ Operation= VectorY = VectorYi }
+	{ Operation= VectorX *= AppartientObject }
+	{ Operation= VectorY *= AppartientObject }
+}
+
+{ CalculCx=
+    { Type= ModeleFonctionnel }
+    { Data=
+      	{ Champ= { Type= P0_Scalaire_Par }{ Nom= Cx }{ Data= ValeurItem 1 0.0 }}
+      	{ SimplexSolveurFonctionnel=
+			{ Type= SsfDragLift }
+			{ NbChampSolution= 1 }
+			{ ChampSolution= Cx }
+			{ NbChampParametre= 7 }
+			{ ChampParametre= Pression Eta1 Vitesse VitesseMoins VectorX PasDeTemps Un }
+     	}
+		{ Boucle= Volume } 
+    }
+    { Dependance=
+        { Maillage= MaillagePrincipal }
+		{ Champ= Vitesse }
+        { Champ= VitesseMoins }
+        { Champ= PasDeTemps }
+        { Champ= Pression }
+        { Champ= Zero }
+		{ Champ= Un }
+        { Champ= VectorX }
+        { Champ= Eta1 }
+    }
+    { DependanceModifiable=
+		{ Champ= Cx }
+	}
+}
+
+
+{ CalculCy=
+    { Type= ModeleFonctionnel }
+    { Data=
+		{ Champ= { Type= P0_Scalaire_Par }{ Nom= Cy }{ Data= ValeurItem 1 0.0 }}
+		{ SimplexSolveurFonctionnel=
+			{ Type= SsfDragLift }
+			{ NbChampSolution= 1 }
+			{ ChampSolution= Cy }
+			{ NbChampParametre= 7 }
+			{ ChampParametre= Pression Eta1 Vitesse VitesseMoins VectorY PasDeTemps Un }
+		}
+		{ Boucle= Volume } 
+    }
+    { Dependance=
+        { Maillage= MaillagePrincipal }
+		{ Champ= Vitesse }
+        { Champ= VitesseMoins }
+        { Champ= PasDeTemps }
+        { Champ= Pression }
+        { Champ= Zero }
+		{ Champ= Un }
+        { Champ= VectorY }
+        { Champ= Eta1 }
+    }
+    { DependanceModifiable=
+		{ Champ= Cy }
+	}
+}
+
+{ CalculCxS=
+	{ Type= ModeleParticulaire }
+	{ Data=
+		{ Champ= { Type= P0C_Scalaire_Par }{ Nom= CxS }{ Data= ValeurItem 1 0.0 }}
+		{ Boucle= Volume }
+		{ ItemSolveur=
+			{ Type= ISSomme }
+			{ Operations=
+				{ Initialise= Zero }
+			}
+			{ NbChampSolution= 1 }
+			{ ChampSolution= CxS }
+			{ NbChampParametre= 1 }
+			{ ChampParametre= Cx }
+		}
+	}
+	{ Dependance=
+		{ Maillage= MaillagePrincipal }
+		{ Champ= Cx }
+		{ Champ= Zero }
+	}
+	{ DependanceModifiable=
+		{ Champ= CxS }
+	}
+} 
+
+{ CalculCyS=
+	{ Type= ModeleParticulaire }
+	{ Data=
+		{ Champ= { Type= P0C_Scalaire_Par }{ Nom= CyS }{ Data= ValeurItem 1 0.0 }}
+		{ Boucle= Volume }
+		{ ItemSolveur=
+			{ Type= ISSomme }
+			{ Operations=
+				{ Initialise= Zero }
+			}
+			{ NbChampSolution= 1 }
+			{ ChampSolution= CyS }
+			{ NbChampParametre= 1 }
+			{ ChampParametre= Cy }
+		}
+	}
+	{ Dependance=
+		{ Maillage= MaillagePrincipal }
+		{ Champ= Cy }
+		{ Champ= Zero }
+	}
+	{ DependanceModifiable=
+		{ Champ= CyS }
+	}
+} 
+
+{ UpdateCxyS=
+    { Type= ModeleArithmetique }
+    { Dependance=
+        { Maillage= MaillagePrincipal }
+        { Champ= mVs }
+    }
+    { DependanceModifiable=
+        { Champ= CxS }
+        { Champ= CyS }
+    }
+    { Operation= CxS *= mVs }
+    { Operation= CyS *= mVs }
+}
+
+
+{ Capteurs=
+	{ Affichage= 1 }
+	{ Type= ModeleCapteur }
+	{ Data= 
+		{ NomFichier= Resultats/Efforts }
+		{ NbCapteurs= 0 }
+		{ HAdaptation= 1 }	
+	}
+	{ Dependance= 
+		{ Maillage= MaillagePrincipal }
+		{ Champ= CompteurTemps }
+		{ Champ= Temps }
+		{ Champ= CxS }
+		{ Champ= CyS }
+	}
+}

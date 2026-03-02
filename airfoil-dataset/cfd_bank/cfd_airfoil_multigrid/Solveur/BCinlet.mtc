@@ -1,0 +1,73 @@
+{ CalcIn=
+	{ Type= ModeleDeModeles }
+	{ Dependance=
+		{ Maillage= MaillagePrincipal }
+		{ Modele= MultiplyAmplitudeInlet }
+		{ Modele= ConcatVitesseIn }
+	}
+}
+
+{ MultiplyAmplitudeInlet=
+	{ Type= ModeleArithmetique }
+	{ Dependance=
+		{ Maillage= MaillagePrincipal }
+		{ Champ= AmplitudeInlet }
+	}
+	{ DependanceModifiable=
+		{ Champ= VxIn }
+	}
+	{ Operation= VxIn *= AmplitudeInlet }
+}
+
+{ ConcatVitesseIn=
+	{ Type= ModeleParticulaire }
+	{ Data=
+		{ Champ= { Type= P1_Vecteur_Par }	{ Nom= VitesseIn }	{ Data: Dimension/vecteur.txt }}
+		{ ItemSolveur=
+			{ Type= ISConcatenation }
+			{ NbChampSolution= 1 }
+			{ ChampSolution= VitesseIn }
+			{ NbChampParametre= 2 }
+			{ ChampParametre= VxIn Zero }
+		}
+	}
+	{ Dependance=
+		{ Maillage= MaillagePrincipal }
+		{ Champ= VxIn }
+		{ Champ= Zero }
+	}
+	{ DependanceModifiable=
+		{ Champ= VitesseIn }
+	}
+}
+
+{ IniV=
+	{ Type= ModeleArithmetique }
+	{ Dependance=
+		{ Maillage= MaillagePrincipal }
+		{ Champ= VitesseIn }
+	}
+	{ DependanceModifiable=
+		{ Champ= Vitesse }
+	}
+	{ Operation= Vitesse = VitesseIn }
+}
+
+{ CalcReynolds= 
+	{ Type= ModeleArithmetique }
+	{ Data=
+		{ Champ= { Type= P1_Scalaire_Par }	{ Nom= Reynolds }	{ ValeurItem= 1 0 }}
+	}
+	{ Dependance=
+		{ Maillage= MaillagePrincipal }
+		{ Champ= VxIn }
+		{ Champ= Rho1 }
+		{ Champ= Eta1 }
+	}
+	{ DependanceModifiable=
+		{ Champ= Reynolds }
+	}
+	{ Operation= Reynolds = VxIn }
+	{ Operation= Reynolds *= Rho1 }
+	{ Operation= Reynolds /= Eta1 }
+}

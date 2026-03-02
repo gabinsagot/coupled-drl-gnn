@@ -1,0 +1,108 @@
+{ Multigrid= 
+    { Type= ModeleDeModeles }
+    { Dependance= 
+        { Modele= InterpolateGrid }
+        { Modele= SortiesMultigrid }
+    }
+}
+////////////////////////// DO MULTIGRID INTERP //////////////////////////
+{ InterpolateGrid=
+    { Type= ModeleTransport }
+    { Data=
+        { Champ= { Type= P1_Scalaire_Par }  { Nom= PressionCoarse }	{ Data= ValeurItem 1 0 } }
+		{ Champ= { Type= P1_Vecteur_Par }   { Nom= VitesseCoarse }	{ Data= ValeurItem 2 0 0 } }
+        { Champ= { Type= P1_Scalaire_Par }  { Nom= NodeTypeCoarse }	{ Data= ValeurItem 1 0 } }
+        { Champ= { Type= P1_Scalaire_Par }  { Nom= ReynoldsCoarse }	{ Data= ValeurItem 1 0 }}
+        { Transport=
+            { Brique= Boite }
+            { Methode= Logarithmique }
+            { TailleMax= 1024 }
+        }
+        { NbChampSolution= 4 }
+        { ChampSolution= NodeTypeCoarse ReynoldsCoarse PressionCoarse VitesseCoarse }
+        { NbChampParametre= 4 }
+        { ChampParametre= NodeType Reynolds Pression Vitesse }
+    }
+    { Dependance=
+        { Maillage= MaillageCoarse }
+        { Champ= NodeType }
+        { Champ= Reynolds }
+        { Champ= Pression }
+        { Champ= Vitesse }
+    }
+}
+
+
+{ SortiesMultigrid=
+    { Type= ModeleSortie }
+    { Data= 
+		{ Champ= { Type= P0C_Scalaire_Par }  { Nom= FreqVtkCoarse }  { Data= ValeurItem 1 1 } }
+        { NomFichier= Resultats/2dCoarse/simu } 
+        { NomFrequence= FreqVtkCoarse }
+        { NomCompteur= CompteurTemps }
+        { TypeFichier= SortieVtu } 
+    }
+    { Dependance= 
+        { Maillage= MaillageCoarse }
+        { Champ= CompteurTemps }
+    }
+    { DependanceAEcrire= 
+		{ Maillage= MaillageCoarse }	 	 
+		{ Champ= Temps } 
+		{ Champ= CompteurTemps } 
+		{ Champ= VitesseCoarse }
+		{ Champ= PressionCoarse }
+        { Champ= ReynoldsCoarse }
+		{ Champ= NodeTypeCoarse }
+ 	}
+}
+
+/////////////////////////// PREPARE MULTIGRID ///////////////////////////
+
+{ PrepareMultigrid=
+    { Type= ModeleDeModeles }
+    { Dependance= 
+        { Modele= MaillageCoarse }
+    }
+}
+
+{ MaillageMultigrid=
+	{ Type= ModeleMaillage }
+	{ Nom= MaillageCoarse }
+	{ M: meshes/domain.t }	// meshes/domaincoarse.t
+	{ Data=
+		//{ Champ= { Type= P0C_Scalaire_Par }  { Nom= LaMargeCoarse }      { Data= ValeurItem 1 100 } }
+		{ Champ= { Type= P0_Scalaire_Par }   { Nom= BordElementCoarse }  { Data= ValeurItem 1 0 } }
+		{ Champ= { Type= P1_Scalaire_Par }   { Nom= BordNoeudCoarse }    { Data= ValeurItem 1 0 } }
+		{ Champ= { Type= P1_Vecteur_Par }    { Nom= CoordonneesCoarse }  { Data= ValeurItem 2 0 0 } }
+		{ NbChampSolution= 3 } 
+		{ ChampSolution= BordNoeudCoarse BordElementCoarse CoordonneesCoarse }
+	   	// { HAdaptation=
+		// 	{ Sequence= "1 4\n2 4\n0\n" }
+		// 	{ Effectue= BLMOne }
+		// 	{ Marge= LaMargeCoarse }
+		// 	{ Taille= BLMTailleDeMaille1 }
+		// 	{ Transport=
+		// 		{ Brique= Boite }
+		// 		{ Methode= Logarithmique }
+		// 		{ OptionInOut= 2 } 
+		// 		{ TailleMax= 1024 }
+		// 	}
+		// }
+		{ Partitionnement=
+			{ Scripts=
+				{ Remaillage= Maillage/remaille.txt }
+				{ Decale= Maillage/decale.txt }
+				{ Repartitionne= Maillage/partit_ameliore.txt }
+			}
+		}
+		// { NbChampParametre= 2 }
+        // { ChampParametre= BLMTailleDeMaille1 BLMOne } 
+	}
+	{ Dependance= 	
+		{ Maillage= MaillageCoarse }
+        // { Champ= BLMTailleDeMaille1 }
+        // { Champ= BLMOne }
+        // { Champ= LaMargeCoarse }
+	}
+}

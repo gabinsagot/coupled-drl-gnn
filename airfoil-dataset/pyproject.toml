@@ -1,0 +1,54 @@
+[build-system]
+requires = ["setuptools>=42", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "airfoil-dataset"
+version = "0.1.0"
+description = "Create an airfoil cfd dataset for GNN training"
+authors = [
+    {name = "T. Michel", email = "herodote110@gmail.com"},
+]
+keywords = ["dataset", "gmsh", "cfd"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Topic :: Software Development :: Build Tools",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3 :: Only"
+]
+dependencies = [
+    "pandas==2.2.3",
+    "glob2",
+    "setuptools>=42",
+    "wheel",
+    "gmsh==4.11.1",
+    "meshio@git+https://github.com/pjekenrico/meshio.git",
+    "numpy==2.2.3",
+    "scipy==1.15.2",
+    "matplotlib==3.10.1",
+    "networkx",
+    "h5py==3.13.0",
+    "tqdm==4.67.1",
+    "scikit-learn==1.7.0",]
+
+[project.optional-dependencies]
+igl = ["libigl"]
+
+[project.urls]
+homepage = "https://github.com/theodore-michel/airfoil-dataset"
+repository = "https://github.com/theodore-michel/airfoil-dataset/"
+bug-tracker = "https://github.com/theodore-michel/airfoil-dataset/issues"
+
+[project.scripts]
+dataset = "main:main"
+geometry = "geometry:main_geometry"
+convert = "convert:main_convert"
+postprocess = "postprocess:main_postprocess"
+plot = "visualize.plot_configs:main_visualize"
+simu = "simulate:main_simulate"
